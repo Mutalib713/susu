@@ -2,3 +2,5 @@
 node_modules/
 # build/ IS committed on purpose: it holds the contract ABI and the deployed
 # address, which the app needs at runtime. Nothing secret lives in there.
+
+.vercel

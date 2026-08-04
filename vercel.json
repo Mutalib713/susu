@@ -1,0 +1,9 @@
+{
+  "rewrites": [{ "source": "/api/:action", "destination": "/api/relay?action=:action" }],
+  "functions": {
+    "api/relay.js": {
+      "includeFiles": "build/**",
+      "maxDuration": 60
+    }
+  }
+}

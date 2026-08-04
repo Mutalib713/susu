@@ -85,6 +85,68 @@ We would rather say this ourselves than have you find it.
 - **There is no mobile money on-ramp yet.** Today the balance is handed out. Turning real cedis
   into a balance needs a payment provider and their approval, which takes weeks, not hours.
 
+## The questions people actually ask
+
+These came up while building it. Short answers here, full detail in
+[TECHNICAL.md](TECHNICAL.md).
+
+**What if someone stops paying after they've taken the pot?**
+
+No software can force anyone to pay, and anybody who tells you a blockchain solves this is
+selling something. What changes is the consequence. Today a defaulter takes the pot, stops
+paying, and joins a different susu two streets over where nobody knows. Here the record is
+permanent and public, so it travels with them. Next contract change is eligibility by history:
+you must have contributed several rounds before you can take a pot, which is how careful groups
+already order people. **The current version does not handle this yet.** Payout is operator-
+triggered with no eligibility rules.
+
+**How does money actually get in? Do you deposit?**
+
+Right now, no. New members are handed GHS 500 of demo money by the relayer. Nothing real moves.
+
+The real version is mobile money in, mobile money out. You send to the group's number the way
+you already send MoMo to anyone, and your balance goes up. Payout comes back to your number. You
+never buy a coin. The chain holds the book and the rules, not the cash. The reason this isn't
+built is a Bank of Ghana licence or a licensed partner, which is weeks of paperwork rather than
+an afternoon of code.
+
+**How would the app know the money arrived?**
+
+The payment provider sends an automatic signed message the moment a payment lands, and the
+relayer credits the balance. That's an *oracle* — a bridge that tells the chain about something
+that happened in the real world — and the uncomfortable part is that whoever tells the chain can
+lie to it. We shrank that trust rather than removing it: we never hold the cash, the book can't
+be edited, every credit is public and dated, and the member has their own MoMo receipt to check
+against. Proper fixes are multiple independent signers, and eventually web proofs (zkTLS).
+
+**Who pays the transaction fees?**
+
+Today, our relayer, out of a throwaway testnet account. In production, the same way the susu
+collector already gets paid — traditionally about one day's contribution a month. On a cheap L2
+a transaction costs a fraction of a pesewa, so the model doesn't need inventing. It needs
+undercutting.
+
+**What about people without smartphones?**
+
+The real answer is USSD, the `*170#` menus that work on any phone with no internet, because
+that's how Ghana already does mobile money. The honest tradeoff: a feature phone can't hold its
+own key, so those members would rely on a server-held key confirmed by SMS. That's weaker
+custody than the browser version, and worth it, because building smartphone-only means building
+for the people who need this least.
+
+**How do you explain this to someone's parents?**
+
+You don't explain it. Nothing above needs to be said. "It's the same susu you already do, same
+amounts, same people, same rounds. The book just can't be changed and nobody is holding the
+cash." Then show them their name, their amount and the date, which is a passbook they've read
+their whole life.
+
+**Is there a group, and can I see what everyone put in?**
+
+Yes — the ledger shows every member and their total, and the book shows every contribution with
+its date, time and receipt. What doesn't exist yet is *multiple* groups. Right now there is one
+box. Group creation and invites are on the roadmap.
+
 ## Run it yourself
 
 You need Node.js 18 or newer.
