@@ -1,0 +1,381 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Susu — the group box</title>
+<meta name="description" content="A susu box for your group. Put in, see everything, take your turn.">
+<meta name="robots" content="noindex">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%231E5FA8'/><path d='M9 21c2.6 1.7 11.4 1.7 14 0M9 16c2.6 1.7 11.4 1.7 14 0M9 11c2.6 1.7 11.4 1.7 14 0' stroke='%23F4EDE1' stroke-width='2.2' fill='none' stroke-linecap='round'/></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Public+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --field:#F4EDE1; --field2:#E7DCC8; --surface:#FFFCF5;
+  --ink:#181410; --ink2:#4E463A; --rule:#D2C4A8;
+  --accent:#1E5FA8; --accent2:#D16211; --support:#1B6B4B;
+
+  --s1:4px; --s2:8px; --s3:12px; --s4:16px; --s5:24px; --s6:32px; --s7:48px; --s8:64px;
+  --r-sm:6px; --r-md:10px; --r-lg:16px;
+
+  --display:"Fraunces",Georgia,serif;
+  --body:"Public Sans",-apple-system,Segoe UI,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{
+  font-family:var(--body); font-size:17px; line-height:1.6;
+  color:var(--ink); background:var(--field);
+  min-height:100dvh; padding-bottom:env(safe-area-inset-bottom);
+}
+::selection{background:var(--accent);color:var(--surface)}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px;border-radius:var(--r-sm)}
+
+.wrap{max-width:560px;margin:0 auto;padding:var(--s5) var(--s4) var(--s8)}
+.num{font-variant-numeric:tabular-nums;font-feature-settings:"tnum" 1}
+
+/* ---------- masthead ---------- */
+.mast{display:flex;align-items:baseline;justify-content:space-between;gap:var(--s3);margin-bottom:var(--s6)}
+.mark{font-family:var(--display);font-size:30px;font-weight:700;letter-spacing:-.02em;line-height:1}
+.mark span{color:var(--accent)}
+.who{font-size:14px;color:var(--ink2);text-align:right;line-height:1.35}
+.who b{display:block;color:var(--ink);font-weight:600}
+
+/* ---------- sign in ---------- */
+.gate{padding-top:var(--s7)}
+.gate h1{font-family:var(--display);font-size:clamp(34px,9vw,46px);font-weight:700;letter-spacing:-.025em;line-height:1.05;margin-bottom:var(--s4)}
+.gate p{color:var(--ink2);max-width:38ch;margin-bottom:var(--s6)}
+label{display:block;font-size:14px;font-weight:600;margin-bottom:var(--s2)}
+input[type=email],input[type=number]{
+  width:100%;font:inherit;font-size:17px;padding:14px var(--s4);
+  background:var(--surface);border:1.5px solid var(--rule);border-radius:var(--r-md);color:var(--ink);
+}
+input:focus{border-color:var(--accent);outline:none;box-shadow:0 0 0 3px rgba(30,95,168,.18)}
+.hint{font-size:13.5px;color:var(--ink2);margin-top:var(--s3)}
+
+/* ---------- buttons ---------- */
+button{font:inherit;cursor:pointer;border:none;background:none;color:inherit}
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:var(--s2);
+  min-height:52px;padding:0 var(--s5);width:100%;
+  background:var(--accent);color:#fff;font-weight:600;font-size:17px;
+  border-radius:var(--r-md);transition:background .15s ease,box-shadow .15s ease;
+}
+.btn:hover:not(:disabled){background:#184E8B;box-shadow:0 2px 0 rgba(24,20,16,.18)}
+.btn:active:not(:disabled){background:#143f71}
+.btn:disabled{background:var(--rule);color:var(--ink2);cursor:not-allowed}
+.btn.ghost{background:transparent;color:var(--accent);border:1.5px solid var(--rule);box-shadow:none}
+.btn.ghost:hover:not(:disabled){background:var(--field2);border-color:var(--accent)}
+
+/* ---------- pot ---------- */
+.pot{
+  background:var(--surface);border:1.5px solid var(--rule);border-radius:var(--r-lg);
+  padding:var(--s5);margin-bottom:var(--s5);position:relative;overflow:hidden;
+}
+.pot::before{content:"";position:absolute;inset:0 0 auto;height:5px;background:var(--accent2)}
+.pot .lbl{font-size:13.5px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--ink2);margin-bottom:var(--s2)}
+.pot .amt{font-family:var(--display);font-size:clamp(44px,13vw,60px);font-weight:700;line-height:1;letter-spacing:-.03em}
+.pot .amt small{font-size:.42em;font-weight:600;color:var(--ink2);margin-right:.18em;letter-spacing:0}
+.pot .sub{font-size:14.5px;color:var(--ink2);margin-top:var(--s3)}
+
+/* ---------- your row ---------- */
+.mine{display:flex;align-items:center;justify-content:space-between;gap:var(--s4);
+  padding:var(--s4) var(--s5);background:var(--field2);border-radius:var(--r-md);margin-bottom:var(--s5)}
+.mine .k{font-size:14px;color:var(--ink2)}
+.mine .v{font-family:var(--display);font-size:26px;font-weight:700;line-height:1.1}
+
+/* ---------- put in ---------- */
+h2{font-family:var(--display);font-size:21px;font-weight:600;margin-bottom:var(--s3)}
+.chips{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--s2);margin-bottom:var(--s3)}
+.chip{
+  min-height:52px;background:var(--surface);border:1.5px solid var(--rule);border-radius:var(--r-md);
+  font-weight:600;font-size:17px;transition:border-color .15s,background .15s;
+}
+.chip:hover{border-color:var(--accent);background:var(--field2)}
+.chip[aria-pressed=true]{border-color:var(--accent);border-width:2.5px;background:var(--surface);color:var(--accent)}
+.row{display:flex;gap:var(--s2);margin-bottom:var(--s5)}
+.row input{flex:1}
+
+/* ---------- ledger ---------- */
+.ledger{border-top:1.5px solid var(--rule);margin-top:var(--s6);padding-top:var(--s5)}
+.entry{display:flex;align-items:center;gap:var(--s3);padding:var(--s3) 0;border-bottom:1px solid var(--rule)}
+.entry:last-child{border-bottom:none}
+.dot{width:34px;height:34px;flex:none;border-radius:50%;background:var(--accent);color:#fff;
+  display:grid;place-items:center;font-weight:600;font-size:14px;text-transform:uppercase}
+.entry.you .dot{background:var(--accent2)}
+.entry .nm{flex:1;min-width:0;font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.entry .nm em{font-style:normal;font-size:13px;color:var(--ink2);display:block;font-weight:400}
+.entry .gv{font-weight:600;white-space:nowrap}
+.empty{padding:var(--s6) var(--s4);text-align:center;color:var(--ink2);background:var(--field2);border-radius:var(--r-md)}
+.empty b{display:block;color:var(--ink);font-family:var(--display);font-size:19px;margin-bottom:var(--s1)}
+
+/* ---------- status ---------- */
+.status{padding:var(--s4);border-radius:var(--r-md);margin-bottom:var(--s4);font-size:15.5px;display:none}
+.status[data-kind=work]{display:block;background:var(--field2);border-left:4px solid var(--accent)}
+.status[data-kind=good]{display:block;background:#E6F1EB;border-left:4px solid var(--support)}
+.status[data-kind=bad]{display:block;background:#F7E7DC;border-left:4px solid var(--accent2)}
+.status a{color:var(--accent);font-weight:600}
+.spin{display:inline-block;width:13px;height:13px;border:2px solid var(--rule);border-top-color:var(--accent);
+  border-radius:50%;animation:sp .7s linear infinite;vertical-align:-2px;margin-right:var(--s2)}
+@keyframes sp{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){.spin{animation-duration:2s}*{transition-duration:.01ms!important}}
+
+/* ---------- the boring truth ---------- */
+.truth{margin-top:var(--s7);border-top:1.5px solid var(--rule);padding-top:var(--s4)}
+.truth summary{cursor:pointer;list-style:none;font-size:14px;color:var(--ink2);
+  display:flex;align-items:center;justify-content:space-between;gap:var(--s3);padding:var(--s2) 0}
+.truth summary::-webkit-details-marker{display:none}
+.truth summary:hover{color:var(--accent)}
+.truth summary b{font-weight:600;color:var(--ink)}
+.truth summary .caret{transition:transform .2s ease}
+.truth[open] summary .caret{transform:rotate(180deg)}
+.truth .body{padding:var(--s4) 0 0;font-size:14.5px;color:var(--ink2)}
+.truth .body p{margin-bottom:var(--s3);max-width:60ch}
+.mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12.5px;word-break:break-all;
+  background:var(--field2);padding:var(--s3);border-radius:var(--r-sm);display:block;margin-bottom:var(--s3)}
+.receipts{list-style:none;font-size:13.5px}
+.receipts li{padding:var(--s2) 0;border-bottom:1px solid var(--rule);display:flex;justify-content:space-between;gap:var(--s3)}
+.receipts li:last-child{border:none}
+.receipts a{color:var(--accent);font-weight:600;white-space:nowrap}
+.hidden{display:none!important}
+</style>
+</head>
+<body>
+
+<main class="wrap">
+
+  <!-- ============ SIGN IN ============ -->
+  <section id="gate" class="gate">
+    <div class="mark" style="margin-bottom:var(--s6)">Su<span>su</span></div>
+    <h1>The box everybody can see into.</h1>
+    <p>Your group puts money in every week. Everyone sees every cedi. Each round, somebody takes the pot.</p>
+
+    <div id="gateStatus" class="status" role="status" aria-live="polite"></div>
+
+    <form id="gateForm" novalidate>
+      <label for="email">Your email</label>
+      <input id="email" type="email" inputmode="email" autocomplete="email" placeholder="kofi@example.com" required>
+      <p class="hint">No password. No app to install. We just need to know which member you are.</p>
+      <div style="height:var(--s5)"></div>
+      <button class="btn" type="submit" id="gateBtn">Open my susu book</button>
+    </form>
+  </section>
+
+  <!-- ============ APP ============ -->
+  <section id="app" class="hidden">
+
+    <header class="mast">
+      <div class="mark">Su<span>su</span></div>
+      <div class="who">
+        <b id="myName">—</b>
+        <span id="groupName">KNUST hall group</span>
+      </div>
+    </header>
+
+    <div id="status" class="status" role="status" aria-live="polite"></div>
+
+    <div class="pot">
+      <div class="lbl">In the box</div>
+      <div class="amt num"><small>GHS</small><span id="potAmt">0.00</span></div>
+      <div class="sub" id="potSub">Nobody has put in yet.</div>
+    </div>
+
+    <div class="mine">
+      <div>
+        <div class="k">Your balance</div>
+        <div class="v num">GHS <span id="myBal">0.00</span></div>
+      </div>
+      <div style="text-align:right">
+        <div class="k">You've put in</div>
+        <div class="v num">GHS <span id="myGave">0.00</span></div>
+      </div>
+    </div>
+
+    <h2>Put money in</h2>
+    <div class="chips" role="group" aria-label="Choose an amount">
+      <button class="chip" data-amt="1000" aria-pressed="false">GHS 10</button>
+      <button class="chip" data-amt="2000" aria-pressed="true">GHS 20</button>
+      <button class="chip" data-amt="5000" aria-pressed="false">GHS 50</button>
+    </div>
+    <div class="row">
+      <input id="custom" type="number" min="1" max="200" step="1" placeholder="Other amount" aria-label="Other amount in cedis">
+    </div>
+    <button class="btn" id="payBtn">Put in GHS 20</button>
+
+    <div class="ledger">
+      <h2>Who has put in</h2>
+      <div id="ledger"></div>
+    </div>
+
+    <details class="truth">
+      <summary>
+        <span>Where does this money actually live? <b>Show me</b></span>
+        <span class="caret" aria-hidden="true">▾</span>
+      </summary>
+      <div class="body">
+        <p><b>This whole book lives on Ethereum.</b> You never installed a wallet, never bought a coin,
+        never paid a fee, never saw a secret phrase. It still happened on a public chain that nobody
+        — not us — can quietly edit.</p>
+        <p>Your phone holds a key it made when you signed in. That key can't pay fees, so it just
+        <em>signs a note</em> saying what you authorised. Our relayer carries the note to the chain and
+        pays the fee. You approved it. Somebody else paid the postage.</p>
+        <span class="mono" id="contractAddr">—</span>
+        <p style="margin-bottom:var(--s2)"><b>Receipts from this session</b></p>
+        <ul class="receipts" id="receipts"><li><span>Nothing yet this session.</span></li></ul>
+        <p style="margin-top:var(--s4);font-size:13px">
+          Test money on Ethereum's Sepolia test network. Not audited. The key sits in this browser
+          rather than being split across servers, which a real deployment would do.
+        </p>
+      </div>
+    </details>
+
+  </section>
+</main>
+
+<script src="/ethers.js"></script>
+<script>
+(() => {
+  const $ = (id) => document.getElementById(id);
+  const ghs = (pesewas) => (pesewas / 100).toFixed(2);
+  const KEY = 'susu.key.v1';
+  const MAIL = 'susu.mail.v1';
+
+  let wallet = null, handle = '', S = null, chosen = 2000;
+  const receipts = [];
+
+  const api = async (action, body) => {
+    const r = await fetch(`/api/${action}`, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify(body || {}),
+    });
+    const j = await r.json();
+    if (!r.ok || j.error) throw new Error(j.error || 'that did not go through');
+    return j;
+  };
+
+  const say = (el, kind, html) => {
+    const n = $(el);
+    if (!kind) { n.removeAttribute('data-kind'); n.innerHTML = ''; return; }
+    n.setAttribute('data-kind', kind);
+    n.innerHTML = kind === 'work' ? `<span class="spin"></span>${html}` : html;
+  };
+
+  const note = (label, r) => {
+    receipts.unshift({ label, url: r.explorer, hash: r.txHash });
+    $('receipts').innerHTML = receipts.map((x) => `
+      <li><span>${x.label}</span>
+      <a href="${x.url}" target="_blank" rel="noopener">${x.hash.slice(0, 10)}…</a></li>`).join('');
+  };
+
+  // ---------- sign in ----------
+  $('gateForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const email = $('email').value.trim();
+    if (!email || !email.includes('@')) return say('gateStatus', 'bad', 'That email looks incomplete.');
+
+    $('gateBtn').disabled = true;
+    say('gateStatus', 'work', 'Opening your book…');
+
+    try {
+      // The invisible part: a key is made here, in the browser, and never shown to anyone.
+      let pk = localStorage.getItem(KEY);
+      if (!pk || localStorage.getItem(MAIL) !== email) {
+        pk = ethers.Wallet.createRandom().privateKey;
+        localStorage.setItem(KEY, pk);
+        localStorage.setItem(MAIL, email);
+      }
+      wallet = new ethers.Wallet(pk);
+      handle = email.split('@')[0].slice(0, 20);
+
+      const r = await api('join', { address: wallet.address, handle });
+      note(r.returning ? 'Signed back in' : 'Opened an account', r);
+
+      $('gate').classList.add('hidden');
+      $('app').classList.remove('hidden');
+      $('myName').textContent = handle;
+      await refresh();
+      if (!r.returning) say('status', 'good', 'Your book is open. We put GHS 500 in to get you going.');
+    } catch (err) {
+      say('gateStatus', 'bad', `${err.message} — try again.`);
+    } finally {
+      $('gateBtn').disabled = false;
+    }
+  });
+
+  // ---------- amount chips ----------
+  const setAmount = (v) => {
+    chosen = v;
+    document.querySelectorAll('.chip').forEach((c) =>
+      c.setAttribute('aria-pressed', String(Number(c.dataset.amt) === v)));
+    $('payBtn').textContent = `Put in GHS ${ghs(v)}`;
+  };
+  document.querySelectorAll('.chip').forEach((c) =>
+    c.addEventListener('click', () => { $('custom').value = ''; setAmount(Number(c.dataset.amt)); }));
+  $('custom').addEventListener('input', (e) => {
+    const n = Math.floor(Number(e.target.value) * 100);
+    if (n > 0) { chosen = n; document.querySelectorAll('.chip').forEach((c) => c.setAttribute('aria-pressed', 'false'));
+      $('payBtn').textContent = `Put in GHS ${ghs(n)}`; }
+  });
+
+  // ---------- put money in ----------
+  $('payBtn').addEventListener('click', async () => {
+    if (!S) return;
+    if (chosen > S.maxContribution) return say('status', 'bad', `GHS ${ghs(S.maxContribution)} is the most in one go.`);
+    const me = S.members.find((m) => m.address.toLowerCase() === wallet.address.toLowerCase());
+    if (!me || me.balance < chosen) return say('status', 'bad', "That's more than your balance.");
+
+    $('payBtn').disabled = true;
+    say('status', 'work', 'Confirming — this takes about ten seconds.');
+
+    try {
+      const { nonce } = await api('nonceFor', { address: wallet.address });
+      // The member SIGNS. They never send a transaction and never hold a coin.
+      const signature = await wallet.signTypedData(
+        S.domain,
+        { Contribute: [{ name: 'member', type: 'address' }, { name: 'amount', type: 'uint256' }, { name: 'nonce', type: 'uint256' }] },
+        { member: wallet.address, amount: chosen, nonce },
+      );
+      const r = await api('contribute', { member: wallet.address, amount: chosen, signature });
+      note(`Put in GHS ${ghs(chosen)}`, r);
+      await refresh();
+      say('status', 'good', `GHS ${ghs(chosen)} is in the box. <a href="${r.explorer}" target="_blank" rel="noopener">See the receipt</a>`);
+    } catch (err) {
+      say('status', 'bad', `${err.message} — nothing was taken from your balance.`);
+    } finally {
+      $('payBtn').disabled = false;
+    }
+  });
+
+  // ---------- render ----------
+  async function refresh() {
+    S = await api('state');
+    $('contractAddr').textContent = S.contract;
+    $('potAmt').textContent = ghs(S.pot);
+
+    const givers = S.members.filter((m) => m.contributed > 0);
+    $('potSub').textContent = givers.length
+      ? `${givers.length} ${givers.length === 1 ? 'person has' : 'people have'} put in${S.rounds ? ` · ${S.rounds} round${S.rounds > 1 ? 's' : ''} paid out` : ''}`
+      : 'Nobody has put in yet.';
+
+    const me = S.members.find((m) => m.address.toLowerCase() === wallet.address.toLowerCase());
+    $('myBal').textContent = ghs(me ? me.balance : 0);
+    $('myGave').textContent = ghs(me ? me.contributed : 0);
+
+    $('ledger').innerHTML = givers.length
+      ? givers.sort((a, b) => b.contributed - a.contributed).map((m) => {
+          const mine = m.address.toLowerCase() === wallet.address.toLowerCase();
+          return `<div class="entry${mine ? ' you' : ''}">
+            <span class="dot">${(m.handle || '?').slice(0, 2)}</span>
+            <span class="nm">${m.handle}${mine ? ' (you)' : ''}<em>${m.address.slice(0, 6)}…${m.address.slice(-4)}</em></span>
+            <span class="gv num">GHS ${ghs(m.contributed)}</span></div>`;
+        }).join('')
+      : `<div class="empty"><b>The box is empty</b>Put something in and your name shows up here for the whole group to see.</div>`;
+  }
+
+  setAmount(2000);
+})();
+</script>
+</body>
+</html>
