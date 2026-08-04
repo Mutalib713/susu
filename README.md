@@ -4,7 +4,12 @@
 
 EAG Ghana Hackathon 2026 · Ghana Track · Built in one afternoon in Kumasi.
 
+**Try it: https://susu-dpbrw08ny-mutalib.vercel.app**
+
 Live contract: [`0xe66CEB8f1791ab5BAC2ce49299fD6731dfc633d9`](https://sepolia.etherscan.io/address/0xe66CEB8f1791ab5BAC2ce49299fD6731dfc633d9) on Ethereum Sepolia.
+
+Sign in with any name and any Ghana-format number, like `024 123 4567`. You get GHS 500 of demo
+money and you're in the group. Nothing to install.
 
 ---
 
@@ -113,16 +118,16 @@ an afternoon of code.
 **How would the app know the money arrived?**
 
 The payment provider sends an automatic signed message the moment a payment lands, and the
-relayer credits the balance. That's an *oracle* — a bridge that tells the chain about something
-that happened in the real world — and the uncomfortable part is that whoever tells the chain can
-lie to it. We shrank that trust rather than removing it: we never hold the cash, the book can't
-be edited, every credit is public and dated, and the member has their own MoMo receipt to check
-against. Proper fixes are multiple independent signers, and eventually web proofs (zkTLS).
+relayer credits the balance. That mechanism is called an *oracle*, a bridge that tells the chain
+about something that happened in the real world. The uncomfortable part: whoever tells the chain
+can lie to it. We shrank that trust rather than removing it. Nobody here holds the cash, the book
+can't be edited, every credit is public and dated, and the member keeps their own MoMo receipt to
+check against. Proper fixes are multiple independent signers, and eventually web proofs (zkTLS).
 
 **Who pays the transaction fees?**
 
 Today, our relayer, out of a throwaway testnet account. In production, the same way the susu
-collector already gets paid — traditionally about one day's contribution a month. On a cheap L2
+collector already gets paid: traditionally about one day's contribution a month. On a cheap L2
 a transaction costs a fraction of a pesewa, so the model doesn't need inventing. It needs
 undercutting.
 
@@ -143,7 +148,7 @@ their whole life.
 
 **Is there a group, and can I see what everyone put in?**
 
-Yes — the ledger shows every member and their total, and the book shows every contribution with
+Yes. The ledger shows every member and their total, and the book shows every contribution with
 its date, time and receipt. What doesn't exist yet is *multiple* groups. Right now there is one
 box. Group creation and invites are on the roadmap.
 
@@ -178,7 +183,7 @@ npm start
 
 Open <http://localhost:8099>.
 
-**To use the contract we already published**, do nothing — `build/deployment.json` already points
+**To use the contract we already published**, do nothing. `build/deployment.json` already points
 at it. **To publish your own copy:**
 
 ```bash
