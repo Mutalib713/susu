@@ -31,8 +31,8 @@ which takes one tap. We asked around before building this. Nobody wanted the cry
 
 So Susu doesn't have a crypto version.
 
-You sign in with your email address. You see cedis. You tap an amount. That's the whole
-experience. There is no wallet to install, no coin to buy, no fee to pay, no secret phrase, and
+You sign in with your phone number, the same one your group already knows you by. You see cedis.
+You tap an amount. That's the whole experience. There is no wallet to install, no coin to buy, no fee to pay, no secret phrase, and
 the word "Ethereum" appears nowhere in the interface.
 
 It is still fully on a public blockchain the entire time.

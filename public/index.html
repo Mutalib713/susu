@@ -159,9 +159,10 @@ h2{font-family:var(--display);font-size:21px;font-weight:600;margin-bottom:var(-
     <div id="gateStatus" class="status" role="status" aria-live="polite"></div>
 
     <form id="gateForm" novalidate>
-      <label for="email">Your email</label>
-      <input id="email" type="email" inputmode="email" autocomplete="email" placeholder="kofi@example.com" required>
-      <p class="hint">No password. No app to install. We just need to know which member you are.</p>
+      <label for="phone">Your phone number</label>
+      <input id="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="024 123 4567" required>
+      <p class="hint">The same number your group already knows you by. No password, no app to install.
+      We only ever show it part-hidden, like 024•••4567.</p>
       <div style="height:var(--s5)"></div>
       <button class="btn" type="submit" id="gateBtn">Open my susu book</button>
     </form>
@@ -244,7 +245,15 @@ h2{font-family:var(--display);font-size:21px;font-weight:600;margin-bottom:var(-
   const $ = (id) => document.getElementById(id);
   const ghs = (pesewas) => (pesewas / 100).toFixed(2);
   const KEY = 'susu.key.v1';
-  const MAIL = 'susu.mail.v1';
+  const WHO = 'susu.who.v1';
+
+  // Ghana mobile numbers: 10 digits starting 0. Also accepts +233 and 233 forms.
+  const normalisePhone = (raw) => {
+    const d = String(raw).replace(/[^\d+]/g, '').replace(/^\+?233/, '0');
+    return /^0\d{9}$/.test(d) ? d : null;
+  };
+  // Only a part-hidden number ever goes onchain — the full one never leaves the phone.
+  const maskPhone = (d) => `${d.slice(0, 3)}•••${d.slice(-4)}`;
 
   let wallet = null, handle = '', S = null, chosen = 2000;
   const receipts = [];
@@ -277,8 +286,8 @@ h2{font-family:var(--display);font-size:21px;font-weight:600;margin-bottom:var(-
   // ---------- sign in ----------
   $('gateForm').addEventListener('submit', async (e) => {
     e.preventDefault();
-    const email = $('email').value.trim();
-    if (!email || !email.includes('@')) return say('gateStatus', 'bad', 'That email looks incomplete.');
+    const phone = normalisePhone($('phone').value);
+    if (!phone) return say('gateStatus', 'bad', "That doesn't look like a Ghana number. Try 024 123 4567.");
 
     $('gateBtn').disabled = true;
     say('gateStatus', 'work', 'Opening your book…');
@@ -286,13 +295,13 @@ h2{font-family:var(--display);font-size:21px;font-weight:600;margin-bottom:var(-
     try {
       // The invisible part: a key is made here, in the browser, and never shown to anyone.
       let pk = localStorage.getItem(KEY);
-      if (!pk || localStorage.getItem(MAIL) !== email) {
+      if (!pk || localStorage.getItem(WHO) !== phone) {
         pk = ethers.Wallet.createRandom().privateKey;
         localStorage.setItem(KEY, pk);
-        localStorage.setItem(MAIL, email);
+        localStorage.setItem(WHO, phone);
       }
       wallet = new ethers.Wallet(pk);
-      handle = email.split('@')[0].slice(0, 20);
+      handle = maskPhone(phone);
 
       const r = await api('join', { address: wallet.address, handle });
       note(r.returning ? 'Signed back in' : 'Opened an account', r);
