@@ -113,6 +113,18 @@ h2{font-family:var(--display);font-size:21px;font-weight:600;margin-bottom:var(-
 .entry .nm em{font-style:normal;font-size:13px;color:var(--ink2);display:block;font-weight:400}
 .entry .gv{font-weight:600;white-space:nowrap}
 .empty{padding:var(--s6) var(--s4);text-align:center;color:var(--ink2);background:var(--field2);border-radius:var(--r-md)}
+.day{font-size:12.5px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--ink2);
+  padding:var(--s4) 0 var(--s2);border-bottom:1.5px solid var(--rule);margin-bottom:var(--s2)}
+.day:first-child{padding-top:0}
+.act{display:flex;align-items:baseline;gap:var(--s3);padding:var(--s3) 0;border-bottom:1px solid var(--rule)}
+.act:last-child{border-bottom:none}
+.act .t{font-size:13px;color:var(--ink2);white-space:nowrap;min-width:64px;font-variant-numeric:tabular-nums}
+.act .d{flex:1;min-width:0}
+.act .d b{font-weight:600;display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.act .d a{font-size:12.5px;color:var(--ink2);text-decoration:underline}
+.act .d a:hover{color:var(--accent)}
+.act .m{font-weight:600;white-space:nowrap}
+.act.out .m{color:var(--support)}
 .empty b{display:block;color:var(--ink);font-family:var(--display);font-size:19px;margin-bottom:var(--s1)}
 
 /* ---------- status ---------- */
@@ -216,6 +228,11 @@ h2{font-family:var(--display);font-size:21px;font-weight:600;margin-bottom:var(-
     <div class="ledger">
       <h2>Who has put in</h2>
       <div id="ledger"></div>
+    </div>
+
+    <div class="ledger">
+      <h2>The book</h2>
+      <div id="activity"></div>
     </div>
 
     <details class="truth">
@@ -393,6 +410,44 @@ h2{font-family:var(--display);font-size:21px;font-weight:600;margin-bottom:var(-
             <span class="gv num">GHS ${ghs(m.contributed)}</span></div>`;
         }).join('')
       : `<div class="empty"><b>The box is empty</b>Put something in and your name shows up here for the whole group to see.</div>`;
+
+    renderBook().catch(() => {});
+  }
+
+  // ---------- the dated book ----------
+  const dayName = (d, now) => {
+    const day = (x) => new Date(x.getFullYear(), x.getMonth(), x.getDate()).getTime();
+    const diff = Math.round((day(now) - day(d)) / 86400000);
+    if (diff === 0) return 'Today';
+    if (diff === 1) return 'Yesterday';
+    return d.toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long' });
+  };
+  const clock = (d) =>
+    d.toLocaleTimeString('en-GB', { hour: 'numeric', minute: '2-digit', hour12: true }).replace(/\s/g, '');
+
+  async function renderBook() {
+    const box = $('activity');
+    const { rows, now } = await api('activity');
+
+    if (!rows.length) {
+      box.innerHTML = `<div class="empty"><b>Nothing written yet</b>Every contribution gets its date and time here, and it can never be changed afterwards.</div>`;
+      return;
+    }
+
+    const today = new Date(now);
+    let last = '';
+    box.innerHTML = rows.map((r) => {
+        const d = new Date(r.at);
+        const label = dayName(d, today);
+        const head = label === last ? '' : `<div class="day">${label}</div>`;
+        last = label;
+        return `${head}<div class="act${r.kind === 'out' ? ' out' : ''}">
+          <span class="t">${clock(d)}</span>
+          <span class="d"><b>${r.who || 'a member'}</b>
+            <a href="${r.explorer}" target="_blank" rel="noopener">${r.kind === 'out' ? 'took the pot' : 'put in'} · receipt</a></span>
+          <span class="m num">${r.kind === 'out' ? '−' : '+'}GHS ${ghs(r.amount)}</span>
+        </div>`;
+      }).join('');
   }
 
   setAmount(2000);
