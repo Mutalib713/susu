@@ -9,7 +9,7 @@ const TYPES = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/cs
 
 const send = (res, code, body, type = 'application/json') => {
   res.writeHead(code, { 'content-type': type, 'cache-control': 'no-store' });
-  res.end(typeof body === 'string' ? body : JSON.stringify(body));
+  res.end(typeof body === 'string' || Buffer.isBuffer(body) ? body : JSON.stringify(body));
 };
 
 const server = http.createServer(async (req, res) => {
