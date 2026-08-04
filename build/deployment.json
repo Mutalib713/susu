@@ -1,7 +1,9 @@
 {
-  "address": "0xe66CEB8f1791ab5BAC2ce49299fD6731dfc633d9",
+  "contract": "SusuCircles",
+  "address": "0x0401020fb602ae32F388F43B3f809AD98e08065B",
   "chainId": 11155111,
   "explorer": "https://sepolia.etherscan.io",
-  "deployTx": "0x3cace1a080d2cbb67133588fd32a8802a56feaadd1036322cc49b701451ec608",
-  "deployedAt": "2026-08-04T14:01:39.597Z"
+  "deployTx": "0xbdf9913d2ac5915e08d054e7409246f3cca93f4225b3e5b6caa55f792e1fda9c",
+  "deployBlock": 11419890,
+  "deployedAt": "2026-08-04T21:12:42.254Z"
 }

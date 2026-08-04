@@ -3,16 +3,19 @@ const { ethers } = require('ethers');
 const fs = require('fs');
 const path = require('path');
 
+const NAME = process.argv[2] || 'SusuCircles';
+
 (async () => {
-  const artifact = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'build', 'Susu.json'), 'utf8'));
+  const artifact = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'build', `${NAME}.json`), 'utf8'));
   const provider = new ethers.JsonRpcProvider(process.env.RPC_URL);
   const wallet = new ethers.Wallet(process.env.RELAYER_KEY, provider);
 
   const bal = await provider.getBalance(wallet.address);
+  console.log('contract:', NAME);
   console.log('relayer :', wallet.address);
   console.log('balance :', ethers.formatEther(bal), 'ETH');
   if (bal === 0n) {
-    console.log('\nNo funds yet. Fund the address above, then run this again.');
+    console.log('\nNo funds. Fund the address above, then run this again.');
     process.exit(1);
   }
 
@@ -22,17 +25,23 @@ const path = require('path');
   await c.waitForDeployment();
 
   const address = await c.getAddress();
-  console.log('SUSU DEPLOYED:', address);
-  console.log('explorer     :', `${process.env.EXPLORER}/address/${address}`);
+  const receipt = await provider.getTransactionReceipt(c.deploymentTransaction().hash);
+
+  console.log('DEPLOYED:', address);
+  console.log('explorer:', `${process.env.EXPLORER}/address/${address}`);
+  console.log('gas used:', receipt.gasUsed.toString());
+  console.log('left    :', ethers.formatEther(await provider.getBalance(wallet.address)), 'ETH');
 
   fs.writeFileSync(
     path.join(__dirname, '..', 'build', 'deployment.json'),
     JSON.stringify(
       {
+        contract: NAME,
         address,
         chainId: Number(process.env.CHAIN_ID),
         explorer: process.env.EXPLORER,
         deployTx: c.deploymentTransaction().hash,
+        deployBlock: receipt.blockNumber,
         deployedAt: new Date().toISOString(),
       },
       null,

@@ -3,14 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Susu — the group box</title>
-<meta name="description" content="A susu box for your group. Put in, see everything, take your turn.">
+<title>Susu — the box everybody can see into</title>
+<meta name="description" content="Group savings where the order is fixed, the book can't be edited, and nobody holds the money.">
 <meta name="robots" content="noindex">
-<meta property="og:title" content="Susu — the group box">
-<meta property="og:description" content="A group savings box where everybody sees every cedi, and nobody has to know what a blockchain is.">
-<meta property="og:type" content="website">
-<meta property="og:image" content="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='1200' height='630'><rect width='1200' height='630' fill='%23F4EDE1'/><text x='80' y='300' font-family='Georgia,serif' font-size='96' font-weight='700' fill='%23181410'>Susu</text><text x='80' y='372' font-family='sans-serif' font-size='34' fill='%234E463A'>The box everybody can see into.</text><rect x='80' y='420' width='120' height='6' fill='%23D16211'/></svg>">
-<meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%231E5FA8'/><path d='M9 21c2.6 1.7 11.4 1.7 14 0M9 16c2.6 1.7 11.4 1.7 14 0M9 11c2.6 1.7 11.4 1.7 14 0' stroke='%23F4EDE1' stroke-width='2.2' fill='none' stroke-linecap='round'/></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -20,114 +15,54 @@
   --field:#F4EDE1; --field2:#E7DCC8; --surface:#FFFCF5;
   --ink:#181410; --ink2:#4E463A; --rule:#D2C4A8;
   --accent:#1E5FA8; --accent2:#D16211; --support:#1B6B4B;
-
   --s1:4px; --s2:8px; --s3:12px; --s4:16px; --s5:24px; --s6:32px; --s7:48px; --s8:64px;
   --r-sm:6px; --r-md:10px; --r-lg:16px;
-
-  --display:"Fraunces",Georgia,serif;
-  --body:"Public Sans",-apple-system,Segoe UI,sans-serif;
+  --display:"Fraunces",Georgia,serif; --body:"Public Sans",-apple-system,Segoe UI,sans-serif;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html{-webkit-text-size-adjust:100%}
-body{
-  font-family:var(--body); font-size:17px; line-height:1.6;
-  color:var(--ink); background:var(--field);
-  min-height:100dvh; padding-bottom:env(safe-area-inset-bottom);
-}
+body{font-family:var(--body);font-size:17px;line-height:1.6;color:var(--ink);background:var(--field);
+  min-height:100dvh;padding-bottom:env(safe-area-inset-bottom)}
 ::selection{background:var(--accent);color:var(--surface)}
 :focus-visible{outline:3px solid var(--accent);outline-offset:2px;border-radius:var(--r-sm)}
-
 .wrap{max-width:560px;margin:0 auto;padding:var(--s5) var(--s4) var(--s8)}
 .num{font-variant-numeric:tabular-nums;font-feature-settings:"tnum" 1}
+.hidden{display:none!important}
 
-/* ---------- masthead ---------- */
-.mast{display:flex;align-items:baseline;justify-content:space-between;gap:var(--s3);margin-bottom:var(--s6)}
-.mark{font-family:var(--display);font-size:30px;font-weight:700;letter-spacing:-.02em;line-height:1}
+.mast{display:flex;align-items:center;justify-content:space-between;gap:var(--s3);margin-bottom:var(--s6)}
+.mark{font-family:var(--display);font-size:28px;font-weight:700;letter-spacing:-.02em;line-height:1;cursor:pointer}
 .mark span{color:var(--accent)}
-.who{font-size:14px;color:var(--ink2);text-align:right;line-height:1.35}
-.who b{display:block;color:var(--ink);font-weight:600}
+.who{font-size:13.5px;color:var(--ink2);text-align:right;line-height:1.35}
+.who b{display:block;color:var(--ink);font-weight:600;font-size:14.5px}
 
-/* ---------- sign in ---------- */
-.gate{padding-top:var(--s7)}
-.gate h1{font-family:var(--display);font-size:clamp(34px,9vw,46px);font-weight:700;letter-spacing:-.025em;line-height:1.05;margin-bottom:var(--s4)}
-.gate p{color:var(--ink2);max-width:38ch;margin-bottom:var(--s6)}
+h1{font-family:var(--display);font-size:clamp(30px,8vw,42px);font-weight:700;letter-spacing:-.025em;line-height:1.08;margin-bottom:var(--s4)}
+h2{font-family:var(--display);font-size:21px;font-weight:600;margin-bottom:var(--s3)}
+h3{font-family:var(--display);font-size:17px;font-weight:600;margin-bottom:var(--s2)}
+.lede{color:var(--ink2);max-width:40ch;margin-bottom:var(--s6)}
+
 label{display:block;font-size:14px;font-weight:600;margin-bottom:var(--s2)}
-input[type=email],input[type=number]{
-  width:100%;font:inherit;font-size:17px;padding:var(--s4);
-  background:var(--surface);border:1.5px solid var(--rule);border-radius:var(--r-md);color:var(--ink);
-}
-input:focus{border-color:var(--accent);outline:none;box-shadow:0 0 0 3px rgba(30,95,168,.18)}
-.hint{font-size:13.5px;color:var(--ink2);margin-top:var(--s3)}
+input,select{width:100%;font:inherit;font-size:17px;padding:14px var(--s4);background:var(--surface);
+  border:1.5px solid var(--rule);border-radius:var(--r-md);color:var(--ink)}
+input:focus,select:focus{border-color:var(--accent);outline:none;box-shadow:0 0 0 3px rgba(30,95,168,.18)}
+.hint{font-size:13.5px;color:var(--ink2);margin-top:var(--s2)}
+.fieldset{margin-bottom:var(--s5)}
+.code-in{text-transform:uppercase;letter-spacing:.14em;font-weight:600;font-family:ui-monospace,Menlo,monospace}
 
-/* ---------- buttons ---------- */
 button{font:inherit;cursor:pointer;border:none;background:none;color:inherit}
-.btn{
-  display:inline-flex;align-items:center;justify-content:center;gap:var(--s2);
-  min-height:52px;padding:0 var(--s5);width:100%;
-  background:var(--accent);color:#fff;font-weight:600;font-size:17px;
-  border-radius:var(--r-md);transition:background .15s ease,box-shadow .15s ease;
-}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:var(--s2);min-height:52px;
+  padding:0 var(--s5);width:100%;background:var(--accent);color:#fff;font-weight:600;font-size:17px;
+  border-radius:var(--r-md);transition:background .15s ease,box-shadow .15s ease}
 .btn:hover:not(:disabled){background:#184E8B;box-shadow:0 2px 0 rgba(24,20,16,.18)}
 .btn:active:not(:disabled){background:#143f71}
 .btn:disabled{background:var(--rule);color:var(--ink2);cursor:not-allowed}
 .btn.ghost{background:transparent;color:var(--accent);border:1.5px solid var(--rule);box-shadow:none}
 .btn.ghost:hover:not(:disabled){background:var(--field2);border-color:var(--accent)}
+.btn.warm{background:var(--accent2)}
+.btn.warm:hover:not(:disabled){background:#B0530E}
+.btn+.btn{margin-top:var(--s3)}
+.back{font-size:14.5px;color:var(--accent);font-weight:600;margin-bottom:var(--s4);display:inline-block}
+.back:hover{text-decoration:underline}
 
-/* ---------- pot ---------- */
-.pot{
-  background:var(--surface);border:1.5px solid var(--rule);border-radius:var(--r-lg);
-  padding:var(--s5);margin-bottom:var(--s5);position:relative;overflow:hidden;
-}
-.pot::before{content:"";position:absolute;inset:0 0 auto;height:5px;background:var(--accent2)}
-.pot .lbl{font-size:13.5px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--ink2);margin-bottom:var(--s2)}
-.pot .amt{font-family:var(--display);font-size:clamp(44px,13vw,60px);font-weight:700;line-height:1;letter-spacing:-.03em}
-.pot .amt small{font-size:.42em;font-weight:600;color:var(--ink2);margin-right:.18em;letter-spacing:0}
-.pot .sub{font-size:14.5px;color:var(--ink2);margin-top:var(--s3)}
-
-/* ---------- your row ---------- */
-.mine{display:flex;align-items:center;justify-content:space-between;gap:var(--s4);
-  padding:var(--s4) var(--s5);background:var(--field2);border-radius:var(--r-md);margin-bottom:var(--s5)}
-.mine .k{font-size:14px;color:var(--ink2)}
-.mine .v{font-family:var(--display);font-size:26px;font-weight:700;line-height:1.1}
-
-/* ---------- put in ---------- */
-h2{font-family:var(--display);font-size:21px;font-weight:600;margin-bottom:var(--s3)}
-.chips{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--s2);margin-bottom:var(--s3)}
-.chip{
-  min-height:52px;background:var(--surface);border:1.5px solid var(--rule);border-radius:var(--r-md);
-  font-weight:600;font-size:17px;transition:border-color .15s,background .15s;
-}
-.chip:hover{border-color:var(--accent);background:var(--field2)}
-.chip[aria-pressed=true]{border-color:var(--accent);border-width:2.5px;background:var(--surface);color:var(--accent)}
-.row{display:flex;gap:var(--s2);margin-bottom:var(--s5)}
-.row input{flex:1}
-
-/* ---------- ledger ---------- */
-.ledger{border-top:1.5px solid var(--rule);margin-top:var(--s6);padding-top:var(--s5)}
-.entry{display:flex;align-items:center;gap:var(--s3);padding:var(--s3) 0;border-bottom:1px solid var(--rule)}
-.entry:last-child{border-bottom:none}
-.dot{width:34px;height:34px;flex:none;border-radius:50%;background:var(--accent);color:#fff;
-  display:grid;place-items:center;font-weight:600;font-size:14px;text-transform:uppercase}
-.entry.you .dot{background:var(--accent2)}
-.entry .nm{flex:1;min-width:0;font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.entry .nm em{font-style:normal;font-size:13px;color:var(--ink2);display:block;font-weight:400}
-.entry .gv{font-weight:600;white-space:nowrap}
-.empty{padding:var(--s6) var(--s4);text-align:center;color:var(--ink2);background:var(--field2);border-radius:var(--r-md)}
-.day{font-size:12.5px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--ink2);
-  padding:var(--s4) 0 var(--s2);border-bottom:1.5px solid var(--rule);margin-bottom:var(--s2)}
-.day:first-child{padding-top:0}
-.act{display:flex;align-items:baseline;gap:var(--s3);padding:var(--s3) 0;border-bottom:1px solid var(--rule)}
-.act:last-child{border-bottom:none}
-.act .t{font-size:13px;color:var(--ink2);white-space:nowrap;min-width:64px;font-variant-numeric:tabular-nums}
-.act .d{flex:1;min-width:0}
-.act .d b{font-weight:600;display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.act .d a{font-size:12.5px;color:var(--ink2);text-decoration:underline}
-.act .d a:hover{color:var(--accent)}
-.act .m{font-weight:600;white-space:nowrap}
-.act.out .m{color:var(--support)}
-.empty b{display:block;color:var(--ink);font-family:var(--display);font-size:19px;margin-bottom:var(--s1)}
-
-/* ---------- status ---------- */
 .status{padding:var(--s4);border-radius:var(--r-md);margin-bottom:var(--s4);font-size:15.5px;display:none}
 .status[data-kind=work]{display:block;background:var(--field2);border-left:4px solid var(--accent)}
 .status[data-kind=good]{display:block;background:#E6F1EB;border-left:4px solid var(--support)}
@@ -138,125 +73,254 @@ h2{font-family:var(--display);font-size:21px;font-weight:600;margin-bottom:var(-
 @keyframes sp{to{transform:rotate(360deg)}}
 @media (prefers-reduced-motion:reduce){.spin{animation-duration:2s}*{transition-duration:.01ms!important}}
 
-/* ---------- the boring truth ---------- */
+.card{background:var(--surface);border:1.5px solid var(--rule);border-radius:var(--r-lg);
+  padding:var(--s5);margin-bottom:var(--s3);display:block;width:100%;text-align:left;transition:border-color .15s}
+button.card:hover{border-color:var(--accent)}
+.card .row1{display:flex;align-items:baseline;justify-content:space-between;gap:var(--s3)}
+.card .nm{font-family:var(--display);font-size:19px;font-weight:600}
+.card .meta{font-size:13.5px;color:var(--ink2);margin-top:var(--s1)}
+.tag{font-size:12px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;padding:4px 10px;
+  border-radius:999px;background:var(--field2);color:var(--ink2);white-space:nowrap}
+.tag.live{background:#E6F1EB;color:var(--support)}
+.tag.wait{background:#F7E7DC;color:#8A3D07}
+
+.pot{background:var(--surface);border:1.5px solid var(--rule);border-radius:var(--r-lg);
+  padding:var(--s5);margin-bottom:var(--s4);position:relative;overflow:hidden}
+.pot::before{content:"";position:absolute;inset:0 0 auto;height:5px;background:var(--accent2)}
+.pot .lbl{font-size:13px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--ink2);margin-bottom:var(--s2)}
+.pot .amt{font-family:var(--display);font-size:clamp(40px,12vw,54px);font-weight:700;line-height:1;letter-spacing:-.03em}
+.pot .amt small{font-size:.42em;font-weight:600;color:var(--ink2);margin-right:.18em}
+.pot .sub{font-size:14.5px;color:var(--ink2);margin-top:var(--s3)}
+
+.turn{display:flex;align-items:center;gap:var(--s3);padding:var(--s4);background:var(--field2);
+  border-radius:var(--r-md);margin-bottom:var(--s4)}
+.turn .crown{width:38px;height:38px;flex:none;border-radius:50%;background:var(--accent2);color:#fff;
+  display:grid;place-items:center;font-weight:700;font-size:15px;font-family:var(--display)}
+.turn .t1{font-size:13px;color:var(--ink2)}
+.turn .t2{font-weight:600}
+
+.mine{display:flex;justify-content:space-between;gap:var(--s4);padding:var(--s4) var(--s5);
+  background:var(--field2);border-radius:var(--r-md);margin-bottom:var(--s5)}
+.mine .k{font-size:13.5px;color:var(--ink2)}
+.mine .v{font-family:var(--display);font-size:23px;font-weight:700;line-height:1.15}
+
+.entry{display:flex;align-items:center;gap:var(--s3);padding:var(--s3) 0;border-bottom:1px solid var(--rule)}
+.entry:last-child{border-bottom:none}
+.pos{width:32px;height:32px;flex:none;border-radius:50%;background:var(--field2);color:var(--ink2);
+  display:grid;place-items:center;font-weight:700;font-size:14px}
+.entry.done .pos{background:var(--support);color:#fff}
+.entry.next .pos{background:var(--accent2);color:#fff}
+.entry .nm2{flex:1;min-width:0;font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.entry .nm2 em{font-style:normal;font-size:13px;color:var(--ink2);display:block;font-weight:400}
+.entry .st{font-size:13px;font-weight:600;white-space:nowrap;color:var(--ink2)}
+.entry .st.paid{color:var(--support)}
+.entry .st.owes{color:var(--accent2)}
+
+.empty{padding:var(--s6) var(--s4);text-align:center;color:var(--ink2);background:var(--field2);border-radius:var(--r-md)}
+.empty b{display:block;color:var(--ink);font-family:var(--display);font-size:19px;margin-bottom:var(--s1)}
+
+.section{border-top:1.5px solid var(--rule);margin-top:var(--s6);padding-top:var(--s5)}
+.day{font-size:12.5px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--ink2);
+  padding:var(--s4) 0 var(--s2);border-bottom:1.5px solid var(--rule);margin-bottom:var(--s2)}
+.day:first-child{padding-top:0}
+.act{display:flex;align-items:baseline;gap:var(--s3);padding:var(--s3) 0;border-bottom:1px solid var(--rule)}
+.act:last-child{border-bottom:none}
+.act .t{font-size:13px;color:var(--ink2);white-space:nowrap;min-width:62px;font-variant-numeric:tabular-nums}
+.act .d{flex:1;min-width:0}
+.act .d b{font-weight:600;display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.act .d a{font-size:12.5px;color:var(--ink2);text-decoration:underline}
+.act .d a:hover{color:var(--accent)}
+.act .m{font-weight:600;white-space:nowrap}
+.act.out .m{color:var(--support)}
+.act.missed .m{color:var(--accent2)}
+
+.codebox{background:var(--surface);border:2px dashed var(--rule);border-radius:var(--r-md);
+  padding:var(--s5);text-align:center;margin-bottom:var(--s4)}
+.codebox .c{font-family:ui-monospace,Menlo,monospace;font-size:32px;font-weight:700;letter-spacing:.18em;
+  color:var(--accent);margin:var(--s2) 0}
+
 .truth{margin-top:var(--s7);border-top:1.5px solid var(--rule);padding-top:var(--s4)}
-.truth summary{cursor:pointer;list-style:none;font-size:14px;color:var(--ink2);
-  display:flex;align-items:center;justify-content:space-between;gap:var(--s3);padding:var(--s2) 0}
+.truth summary{cursor:pointer;list-style:none;font-size:14px;color:var(--ink2);display:flex;
+  align-items:center;justify-content:space-between;gap:var(--s3);padding:var(--s2) 0}
 .truth summary::-webkit-details-marker{display:none}
 .truth summary:hover{color:var(--accent)}
 .truth summary b{font-weight:600;color:var(--ink)}
-.truth summary .caret{transition:transform .2s ease}
-.truth[open] summary .caret{transform:rotate(180deg)}
+.truth .caret{transition:transform .2s ease}
+.truth[open] .caret{transform:rotate(180deg)}
 .truth .body{padding:var(--s4) 0 0;font-size:14.5px;color:var(--ink2)}
 .truth .body p{margin-bottom:var(--s3);max-width:60ch}
-.mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12.5px;word-break:break-all;
-  background:var(--field2);padding:var(--s3);border-radius:var(--r-sm);display:block;margin-bottom:var(--s3)}
-.receipts{list-style:none;font-size:13.5px}
-.receipts li{padding:var(--s2) 0;border-bottom:1px solid var(--rule);display:flex;justify-content:space-between;gap:var(--s3)}
-.receipts li:last-child{border:none}
-.receipts a{color:var(--accent);font-weight:600;white-space:nowrap}
-.hidden{display:none!important}
+.mono{font-family:ui-monospace,Menlo,monospace;font-size:12.5px;word-break:break-all;background:var(--field2);
+  padding:var(--s3);border-radius:var(--r-sm);display:block;margin-bottom:var(--s3)}
 </style>
 </head>
 <body>
-
 <main class="wrap">
 
-  <!-- ============ SIGN IN ============ -->
-  <section id="gate" class="gate">
+  <!-- ══════════ SIGN IN ══════════ -->
+  <section id="v-gate">
     <div class="mark" style="margin-bottom:var(--s6)">Su<span>su</span></div>
     <h1>The box everybody can see into.</h1>
-    <p>Your group puts money in every week. Everyone sees every cedi. Each round, somebody takes the pot.</p>
+    <p class="lede">Your group puts in every round. Everyone sees every cedi. The order is fixed before
+      anyone pays, and nobody can jump the queue.</p>
 
-    <div id="gateStatus" class="status" role="status" aria-live="polite"></div>
+    <div id="s-gate" class="status" role="status" aria-live="polite"></div>
 
-    <form id="gateForm" novalidate>
-      <label for="fullname">Your name</label>
-      <input id="fullname" type="text" autocomplete="name" placeholder="Kwame Asante" maxlength="24" required>
-      <div style="height:var(--s4)"></div>
-
-      <label for="phone">Your phone number</label>
-      <input id="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="024 123 4567" required>
-      <p class="hint">The same number your group already knows you by. No password, no app to install.
-      We only ever show it part-hidden, like 024•••4567.</p>
-      <div style="height:var(--s5)"></div>
-      <button class="btn" type="submit" id="gateBtn">Open my susu book</button>
+    <form id="f-gate" novalidate>
+      <div class="fieldset">
+        <label for="fullname">Your name</label>
+        <input id="fullname" type="text" autocomplete="name" placeholder="Kwame Asante" maxlength="24" required>
+      </div>
+      <div class="fieldset">
+        <label for="phone">Your phone number</label>
+        <input id="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="024 123 4567" required>
+        <p class="hint">The number your group already knows you by. No password, no app.
+          We only ever show it part-hidden, like 024•••4567.</p>
+      </div>
+      <button class="btn" type="submit" id="b-gate">Open my susu book</button>
     </form>
   </section>
 
-  <!-- ============ APP ============ -->
-  <section id="app" class="hidden">
-
+  <!-- ══════════ MY CIRCLES ══════════ -->
+  <section id="v-list" class="hidden">
     <header class="mast">
-      <div class="mark">Su<span>su</span></div>
-      <div class="who">
-        <b id="myName">—</b>
-        <span id="groupName">KNUST hall group</span>
-      </div>
+      <div class="mark" data-go="list">Su<span>su</span></div>
+      <div class="who"><b id="me-name">—</b><span id="me-bal">—</span></div>
     </header>
 
-    <div id="status" class="status" role="status" aria-live="polite"></div>
+    <div id="s-list" class="status" role="status" aria-live="polite"></div>
+
+    <h2>Your circles</h2>
+    <div id="list" style="margin-bottom:var(--s5)"></div>
+
+    <button class="btn" data-go="create">Start a new circle</button>
+    <button class="btn ghost" data-go="join">Join with a code</button>
+  </section>
+
+  <!-- ══════════ CREATE ══════════ -->
+  <section id="v-create" class="hidden">
+    <a class="back" data-go="list" href="#">← Your circles</a>
+    <h2>Start a circle</h2>
+    <p class="lede">You set the amount and the order. Once it starts, neither can be changed by anyone.</p>
+
+    <div id="s-create" class="status" role="status" aria-live="polite"></div>
+
+    <form id="f-create" novalidate>
+      <div class="fieldset">
+        <label for="c-label">What do you call this circle?</label>
+        <input id="c-label" type="text" placeholder="Kejetia Traders" maxlength="40" required>
+      </div>
+      <div class="fieldset">
+        <label for="c-code">Join code</label>
+        <input id="c-code" class="code-in" type="text" placeholder="KEJETIA24" maxlength="16" required>
+        <p class="hint">Share this with the people you want in. 4–16 letters or numbers.</p>
+      </div>
+      <div class="fieldset">
+        <label for="c-amount">How much each round?</label>
+        <input id="c-amount" type="number" min="1" max="500" step="1" value="20" required>
+        <p class="hint">In cedis. Everybody pays the same amount every round.</p>
+      </div>
+      <div class="fieldset">
+        <label for="c-size">How many people?</label>
+        <input id="c-size" type="number" min="2" max="20" step="1" value="4" required>
+        <p class="hint">The circle runs one round per person, so everybody gets one turn.</p>
+      </div>
+      <div class="fieldset">
+        <label for="c-round">How long is a round?</label>
+        <select id="c-round">
+          <option value="120">2 minutes — for trying it out</option>
+          <option value="86400">One day</option>
+          <option value="604800" selected>One week</option>
+          <option value="2592000">One month</option>
+        </select>
+      </div>
+      <button class="btn" type="submit" id="b-create">Create the circle</button>
+    </form>
+  </section>
+
+  <!-- ══════════ JOIN ══════════ -->
+  <section id="v-join" class="hidden">
+    <a class="back" data-go="list" href="#">← Your circles</a>
+    <h2>Join a circle</h2>
+    <p class="lede">Whoever started the circle gives you the code.</p>
+
+    <div id="s-join" class="status" role="status" aria-live="polite"></div>
+
+    <form id="f-join" novalidate>
+      <div class="fieldset">
+        <label for="j-code">Join code</label>
+        <input id="j-code" class="code-in" type="text" placeholder="KEJETIA24" maxlength="16" required>
+      </div>
+      <button class="btn" type="submit" id="b-join">Join this circle</button>
+    </form>
+  </section>
+
+  <!-- ══════════ ONE CIRCLE ══════════ -->
+  <section id="v-circle" class="hidden">
+    <a class="back" data-go="list" href="#">← Your circles</a>
+
+    <header class="mast">
+      <div>
+        <div class="mark" id="ci-label" style="cursor:default">—</div>
+        <div style="font-size:13.5px;color:var(--ink2)" id="ci-round">—</div>
+      </div>
+      <span class="tag" id="ci-tag">—</span>
+    </header>
+
+    <div id="s-circle" class="status" role="status" aria-live="polite"></div>
+
+    <div id="ci-codebox" class="codebox hidden">
+      <div style="font-size:13.5px;color:var(--ink2)">Share this code with your people</div>
+      <div class="c" id="ci-code">—</div>
+      <div style="font-size:13.5px;color:var(--ink2)" id="ci-waiting">—</div>
+    </div>
 
     <div class="pot">
       <div class="lbl">In the box</div>
-      <div class="amt num"><small>GHS</small><span id="potAmt">0.00</span></div>
-      <div class="sub" id="potSub">Nobody has put in yet.</div>
+      <div class="amt num"><small>GHS</small><span id="ci-pot">0.00</span></div>
+      <div class="sub" id="ci-potsub">—</div>
+    </div>
+
+    <div class="turn" id="ci-turn">
+      <span class="crown" id="ci-turn-i">—</span>
+      <div><div class="t1">Whose turn it is</div><div class="t2" id="ci-turn-n">—</div></div>
     </div>
 
     <div class="mine">
-      <div>
-        <div class="k">Your balance</div>
-        <div class="v num">GHS <span id="myBal">0.00</span></div>
-      </div>
-      <div style="text-align:right">
-        <div class="k">You've put in</div>
-        <div class="v num">GHS <span id="myGave">0.00</span></div>
-      </div>
+      <div><div class="k">Your balance</div><div class="v num">GHS <span id="ci-bal">0.00</span></div></div>
+      <div style="text-align:right"><div class="k" id="ci-owe-k">This round</div>
+        <div class="v num" id="ci-owe">—</div></div>
     </div>
 
-    <h2>Put money in</h2>
-    <div class="chips" role="group" aria-label="Choose an amount">
-      <button class="chip" data-amt="1000" aria-pressed="false">GHS 10</button>
-      <button class="chip" data-amt="2000" aria-pressed="true">GHS 20</button>
-      <button class="chip" data-amt="5000" aria-pressed="false">GHS 50</button>
-    </div>
-    <div class="row">
-      <input id="custom" type="number" min="1" max="200" step="1" placeholder="Other amount" aria-label="Other amount in cedis">
-    </div>
-    <button class="btn" id="payBtn">Put in GHS 20</button>
+    <div id="ci-actions"></div>
 
-    <div class="ledger">
-      <h2>Who has put in</h2>
-      <div id="ledger"></div>
+    <div class="section">
+      <h2>The order</h2>
+      <div id="ci-members"></div>
     </div>
 
-    <div class="ledger">
+    <div class="section">
       <h2>The book</h2>
-      <div id="activity"></div>
+      <div id="ci-book"></div>
     </div>
 
     <details class="truth">
-      <summary>
-        <span>Where does this money actually live? <b>Show me</b></span>
-        <span class="caret" aria-hidden="true">▾</span>
-      </summary>
+      <summary><span>Where does this money actually live? <b>Show me</b></span><span class="caret" aria-hidden="true">▾</span></summary>
       <div class="body">
         <p><b>This whole book lives on Ethereum.</b> You never installed a wallet, never bought a coin,
-        never paid a fee, never saw a secret phrase. It still happened on a public chain that nobody
-        — not us — can quietly edit.</p>
+          never paid a fee, never saw a secret phrase. It still happened on a public chain that nobody
+          — not us — can quietly edit.</p>
         <p>Your phone holds a key it made when you signed in. That key can't pay fees, so it just
-        <em>signs a note</em> saying what you authorised. Our relayer carries the note to the chain and
-        pays the fee. You approved it. Somebody else paid the postage.</p>
-        <span class="mono" id="contractAddr">—</span>
-        <p style="margin-bottom:var(--s2)"><b>Receipts from this session</b></p>
-        <ul class="receipts" id="receipts"><li><span>Nothing yet this session.</span></li></ul>
-        <p style="margin-top:var(--s4);font-size:13px">
-          Test money on Ethereum's Sepolia test network. Not audited. The key sits in this browser
-          rather than being split across servers, which a real deployment would do.
-        </p>
+          <em>signs a note</em> saying what you authorised. Our relayer carries the note to the chain and
+          pays the fee. You approved it. Somebody else paid the postage.</p>
+        <p><b>The order is enforced by the contract, not by us.</b> There is no function anywhere that
+          lets anybody choose who gets paid. The contract works it out from the order locked in when
+          the circle started.</p>
+        <span class="mono" id="ci-contract">—</span>
+        <p style="margin-top:var(--s4);font-size:13px">Test money on Ethereum's Sepolia test network. Not
+          audited. The key sits in this browser rather than being split across servers, which a real
+          deployment would do. Balances are issued by us — there is no mobile money connection yet.</p>
       </div>
     </details>
-
   </section>
 </main>
 
@@ -265,27 +329,19 @@ h2{font-family:var(--display);font-size:21px;font-weight:600;margin-bottom:var(-
 <script>
 (() => {
   const $ = (id) => document.getElementById(id);
-  const ghs = (pesewas) => (pesewas / 100).toFixed(2);
-  const KEY = 'susu.key.v1';
-  const WHO = 'susu.who.v1';
+  const ghs = (p) => (p / 100).toFixed(2);
+  const KEY = 'susu.key.v2', WHO = 'susu.who.v2', NAME = 'susu.name.v2';
 
-  // Ghana mobile numbers: 10 digits starting 0. Also accepts +233 and 233 forms.
-  const normalisePhone = (raw) => {
-    const d = String(raw).replace(/[^\d+]/g, '').replace(/^\+?233/, '0');
-    return /^0\d{9}$/.test(d) ? d : null;
-  };
-  // Only a part-hidden number ever goes onchain — the full one never leaves the phone.
-  const maskPhone = (d) => `${d.slice(0, 3)}•••${d.slice(-4)}`;
+  const TYPES = { Contribute: [
+    { name: 'circleId', type: 'uint256' }, { name: 'member', type: 'address' },
+    { name: 'amount', type: 'uint256' }, { name: 'round', type: 'uint256' },
+    { name: 'nonce', type: 'uint256' } ] };
 
-  let wallet = null, handle = '', S = null, chosen = 2000;
-  const receipts = [];
+  let wallet = null, handle = '', openCircle = null, C = null;
 
   const api = async (action, body) => {
-    const r = await fetch(`/api/${action}`, {
-      method: 'POST',
-      headers: { 'content-type': 'application/json' },
-      body: JSON.stringify(body || {}),
-    });
+    const r = await fetch(`/api/${action}`, { method: 'POST',
+      headers: { 'content-type': 'application/json' }, body: JSON.stringify(body || {}) });
     const j = await r.json();
     if (!r.ok || j.error) throw new Error(j.error || 'that did not go through');
     return j;
@@ -298,160 +354,321 @@ h2{font-family:var(--display);font-size:21px;font-weight:600;margin-bottom:var(-
     n.innerHTML = kind === 'work' ? `<span class="spin"></span>${html}` : html;
   };
 
-  const note = (label, r) => {
-    receipts.unshift({ label, url: r.explorer, hash: r.txHash });
-    $('receipts').innerHTML = receipts.map((x) => `
-      <li><span>${x.label}</span>
-      <a href="${x.url}" target="_blank" rel="noopener">${x.hash.slice(0, 10)}…</a></li>`).join('');
+  const show = (view) => {
+    ['gate', 'list', 'create', 'join', 'circle'].forEach((v) =>
+      $(`v-${v}`).classList.toggle('hidden', v !== view));
+    window.scrollTo(0, 0);
   };
 
+  const normalisePhone = (raw) => {
+    const d = String(raw).replace(/[^\d+]/g, '').replace(/^\+?233/, '0');
+    return /^0\d{9}$/.test(d) ? d : null;
+  };
+  const maskPhone = (d) => `${d.slice(0, 3)}•••${d.slice(-4)}`;
+
+  document.addEventListener('click', (e) => {
+    const go = e.target.closest('[data-go]');
+    if (!go) return;
+    e.preventDefault();
+    const to = go.dataset.go;
+    if (to === 'list') refreshList();
+    show(to);
+  });
+
   // ---------- sign in ----------
-  $('gateForm').addEventListener('submit', async (e) => {
+  $('f-gate').addEventListener('submit', async (e) => {
     e.preventDefault();
     const nm = $('fullname').value.trim().replace(/\s+/g, ' ').slice(0, 24);
-    if (nm.length < 2) return say('gateStatus', 'bad', 'Your group needs a name to recognise you by.');
-
+    if (nm.length < 2) return say('s-gate', 'bad', 'Your group needs a name to recognise you by.');
     const phone = normalisePhone($('phone').value);
-    if (!phone) return say('gateStatus', 'bad', "That doesn't look like a Ghana number. Try 024 123 4567.");
+    if (!phone) return say('s-gate', 'bad', "That doesn't look like a Ghana number. Try 024 123 4567.");
 
-    $('gateBtn').disabled = true;
-    say('gateStatus', 'work', 'Opening your book…');
-
+    $('b-gate').disabled = true;
+    say('s-gate', 'work', 'Opening your book…');
     try {
-      // The invisible part: a key is made here, in the browser, and never shown to anyone.
       let pk = localStorage.getItem(KEY);
       if (!pk || localStorage.getItem(WHO) !== phone) {
         pk = ethers.Wallet.createRandom().privateKey;
-        localStorage.setItem(KEY, pk);
-        localStorage.setItem(WHO, phone);
+        localStorage.setItem(KEY, pk); localStorage.setItem(WHO, phone);
       }
       wallet = new ethers.Wallet(pk);
       handle = `${nm} · ${maskPhone(phone)}`;
-
-      const r = await api('join', { address: wallet.address, handle });
-      note(r.returning ? 'Signed back in' : 'Opened an account', r);
-
-      $('gate').classList.add('hidden');
-      $('app').classList.remove('hidden');
-      $('myName').textContent = handle;
-      await refresh();
-      if (!r.returning) say('status', 'good', 'Your book is open. We put GHS 500 in to get you going.');
+      localStorage.setItem(NAME, handle);
+      $('me-name').textContent = handle;
+      say('s-gate', null);
+      await refreshList();
+      show('list');
     } catch (err) {
-      say('gateStatus', 'bad', `${err.message} — try again.`);
-    } finally {
-      $('gateBtn').disabled = false;
-    }
+      say('s-gate', 'bad', `${err.message} — try again.`);
+    } finally { $('b-gate').disabled = false; }
   });
 
-  // ---------- amount chips ----------
-  const setAmount = (v) => {
-    chosen = v;
-    document.querySelectorAll('.chip').forEach((c) =>
-      c.setAttribute('aria-pressed', String(Number(c.dataset.amt) === v)));
-    $('payBtn').textContent = `Put in GHS ${ghs(v)}`;
-  };
-  document.querySelectorAll('.chip').forEach((c) =>
-    c.addEventListener('click', () => { $('custom').value = ''; setAmount(Number(c.dataset.amt)); }));
-  $('custom').addEventListener('input', (e) => {
-    const n = Math.floor(Number(e.target.value) * 100);
-    if (n > 0) { chosen = n; document.querySelectorAll('.chip').forEach((c) => c.setAttribute('aria-pressed', 'false'));
-      $('payBtn').textContent = `Put in GHS ${ghs(n)}`; }
-  });
-
-  // ---------- put money in ----------
-  $('payBtn').addEventListener('click', async () => {
-    if (!S) return;
-    if (chosen > S.maxContribution) return say('status', 'bad', `GHS ${ghs(S.maxContribution)} is the most in one go.`);
-    const me = S.members.find((m) => m.address.toLowerCase() === wallet.address.toLowerCase());
-    if (!me || me.balance < chosen) return say('status', 'bad', "That's more than your balance.");
-
-    $('payBtn').disabled = true;
-    say('status', 'work', 'Confirming — this takes about ten seconds.');
-
+  // ---------- my circles ----------
+  async function refreshList() {
+    if (!wallet) return;
+    $('list').innerHTML = `<div class="empty">Loading your circles…</div>`;
     try {
-      const { nonce } = await api('nonceFor', { address: wallet.address });
-      // The member SIGNS. They never send a transaction and never hold a coin.
-      const signature = await wallet.signTypedData(
-        S.domain,
-        { Contribute: [{ name: 'member', type: 'address' }, { name: 'amount', type: 'uint256' }, { name: 'nonce', type: 'uint256' }] },
-        { member: wallet.address, amount: chosen, nonce },
-      );
-      const r = await api('contribute', { member: wallet.address, amount: chosen, signature });
-      note(`Put in GHS ${ghs(chosen)}`, r);
-      await refresh();
-      say('status', 'good', `GHS ${ghs(chosen)} is in the box. <a href="${r.explorer}" target="_blank" rel="noopener">See the receipt</a>`);
+      const { circles, balance } = await api('myCircles', { address: wallet.address });
+      $('me-bal').textContent = `GHS ${ghs(balance)}`;
+      $('list').innerHTML = circles.length ? circles.map((c) => {
+        const tag = c.finished ? '<span class="tag">Finished</span>'
+          : c.started ? `<span class="tag live">Round ${c.currentRound + 1}</span>`
+          : `<span class="tag wait">${c.joined}/${c.size} joined</span>`;
+        return `<button class="card" data-circle="${c.circleId}">
+          <div class="row1"><span class="nm">${c.label}</span>${tag}</div>
+          <div class="meta">GHS ${ghs(c.contributionAmount)} a round · ${c.size} people${c.isOwner ? ' · you started it' : ''}</div>
+        </button>`;
+      }).join('') : `<div class="empty"><b>No circles yet</b>Start one and share the code, or join one with a code somebody gave you.</div>`;
+
+      $('list').querySelectorAll('[data-circle]').forEach((b) =>
+        b.addEventListener('click', () => openCircleView(Number(b.dataset.circle))));
     } catch (err) {
-      say('status', 'bad', `${err.message} — nothing was taken from your balance.`);
-    } finally {
-      $('payBtn').disabled = false;
+      $('list').innerHTML = `<div class="empty"><b>Couldn't load your circles</b>${err.message}</div>`;
     }
+  }
+
+  // ---------- create ----------
+  $('f-create').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const label = $('c-label').value.trim();
+    const code = $('c-code').value.trim().toUpperCase();
+    const amount = Math.round(Number($('c-amount').value) * 100);
+    const size = Number($('c-size').value);
+    const roundLength = Number($('c-round').value);
+
+    if (label.length < 2) return say('s-create', 'bad', 'Give the circle a name your group will recognise.');
+    if (!/^[A-Z0-9]{4,16}$/.test(code)) return say('s-create', 'bad', 'The code needs 4–16 letters or numbers, nothing else.');
+    if (!(amount > 0)) return say('s-create', 'bad', 'Set how much each person pays per round.');
+
+    $('b-create').disabled = true;
+    say('s-create', 'work', 'Creating the circle onchain — about ten seconds.');
+    try {
+      const r = await api('createCircle', { label, code, owner: wallet.address, amount, roundLength, size });
+      await api('joinCircle', { code, address: wallet.address, handle });
+      sessionStorage.setItem(`code.${r.circleId}`, r.code);
+      say('s-create', null);
+      await refreshList();
+      openCircleView(r.circleId);
+    } catch (err) {
+      say('s-create', 'bad', err.message);
+    } finally { $('b-create').disabled = false; }
   });
 
-  // ---------- render ----------
-  async function refresh() {
-    S = await api('state');
-    $('contractAddr').textContent = S.contract;
-    $('potAmt').textContent = ghs(S.pot);
+  // ---------- join ----------
+  $('f-join').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const code = $('j-code').value.trim().toUpperCase();
+    if (!code) return say('s-join', 'bad', 'Enter the code you were given.');
 
-    const givers = S.members.filter((m) => m.contributed > 0);
-    $('potSub').textContent = givers.length
-      ? `${givers.length} ${givers.length === 1 ? 'person has' : 'people have'} put in${S.rounds ? ` · ${S.rounds} round${S.rounds > 1 ? 's' : ''} paid out` : ''}`
-      : 'Nobody has put in yet.';
+    $('b-join').disabled = true;
+    say('s-join', 'work', 'Joining — about ten seconds.');
+    try {
+      const r = await api('joinCircle', { code, address: wallet.address, handle });
+      sessionStorage.setItem(`code.${r.circleId}`, code);
+      say('s-join', null);
+      $('j-code').value = '';
+      await refreshList();
+      openCircleView(r.circleId);
+    } catch (err) {
+      say('s-join', 'bad', err.message);
+    } finally { $('b-join').disabled = false; }
+  });
 
-    const me = S.members.find((m) => m.address.toLowerCase() === wallet.address.toLowerCase());
-    $('myBal').textContent = ghs(me ? me.balance : 0);
-    $('myGave').textContent = ghs(me ? me.contributed : 0);
-
-    $('ledger').innerHTML = givers.length
-      ? givers.sort((a, b) => b.contributed - a.contributed).map((m) => {
-          const mine = m.address.toLowerCase() === wallet.address.toLowerCase();
-          return `<div class="entry${mine ? ' you' : ''}">
-            <span class="dot">${(m.handle || '?').slice(0, 2)}</span>
-            <span class="nm">${m.handle}${mine ? ' (you)' : ''}<em>${m.address.slice(0, 6)}…${m.address.slice(-4)}</em></span>
-            <span class="gv num">GHS ${ghs(m.contributed)}</span></div>`;
-        }).join('')
-      : `<div class="empty"><b>The box is empty</b>Put something in and your name shows up here for the whole group to see.</div>`;
-
+  // ---------- one circle ----------
+  async function openCircleView(id) {
+    openCircle = id;
+    show('circle');
+    $('ci-members').innerHTML = `<div class="empty">Loading…</div>`;
+    $('ci-book').innerHTML = '';
+    await renderCircle();
     renderBook().catch(() => {});
   }
 
-  // ---------- the dated book ----------
-  const dayName = (d, now) => {
-    const day = (x) => new Date(x.getFullYear(), x.getMonth(), x.getDate()).getTime();
-    const diff = Math.round((day(now) - day(d)) / 86400000);
-    if (diff === 0) return 'Today';
-    if (diff === 1) return 'Yesterday';
-    return d.toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long' });
-  };
-  const clock = (d) =>
-    d.toLocaleTimeString('en-GB', { hour: 'numeric', minute: '2-digit', hour12: true }).replace(/\s/g, '');
+  async function renderCircle() {
+    C = await api('circleState', { circleId: openCircle, me: wallet.address });
 
-  async function renderBook() {
-    const box = $('activity');
-    const { rows, now } = await api('activity');
+    $('ci-label').textContent = C.label;
+    $('ci-contract').textContent = C.contract;
+    $('ci-pot').textContent = ghs(C.pot);
+    $('ci-bal').textContent = ghs(C.me ? C.me.balance : 0);
 
-    if (!rows.length) {
-      box.innerHTML = `<div class="empty"><b>Nothing written yet</b>Every contribution gets its date and time here, and it can never be changed afterwards.</div>`;
+    $('ci-round').textContent = C.finished ? 'Finished'
+      : C.started ? `Round ${C.currentRound + 1} of ${C.members.length} · GHS ${ghs(C.contributionAmount)} each`
+      : `Not started · GHS ${ghs(C.contributionAmount)} a round`;
+
+    const tag = $('ci-tag');
+    tag.className = 'tag ' + (C.finished ? '' : C.started ? 'live' : 'wait');
+    tag.textContent = C.finished ? 'Finished' : C.started ? 'Running' : `${C.joined}/${C.size} joined`;
+
+    // join code, only before it starts
+    $('ci-codebox').classList.toggle('hidden', C.started);
+    if (!C.started) {
+      $('ci-code').textContent = sessionStorage.getItem(`code.${C.circleId}`) || '— ask the owner —';
+      $('ci-waiting').textContent = C.joined >= 2
+        ? `${C.joined} of ${C.size} have joined. You can start whenever you're ready.`
+        : `${C.joined} of ${C.size} have joined. You need at least two.`;
+    }
+
+    // pot subtitle
+    const paidCount = C.members.filter((m) => m.paidThisRound).length;
+    $('ci-potsub').textContent = !C.started ? 'Nothing yet — the circle has not started.'
+      : C.finished ? 'Everybody has had their turn.'
+      : `${paidCount} of ${C.members.length} have paid this round`;
+
+    // whose turn
+    const next = C.nextInLine ? C.members.find((m) => m.address === C.nextInLine.address) : null;
+    $('ci-turn').classList.toggle('hidden', !C.started || C.finished || !next);
+    if (next) {
+      $('ci-turn-i').textContent = String(next.position + 1);
+      const mine = C.me && next.address === C.me.address;
+      $('ci-turn-n').textContent = (mine ? 'You' : next.handle.split(' · ')[0])
+        + (C.nextInLine.eligible ? '' : ' — behind on payments');
+    }
+
+    // your standing
+    if (C.me && C.started && !C.finished) {
+      $('ci-owe-k').textContent = C.me.arrears > 1 ? 'You are behind' : 'This round';
+      $('ci-owe').textContent = C.me.paidThisRound && C.me.arrears === 0 ? 'Paid'
+        : C.me.arrears > 1 ? `${C.me.arrears} rounds` : `GHS ${ghs(C.contributionAmount)}`;
+    } else {
+      $('ci-owe-k').textContent = 'Your turn';
+      $('ci-owe').textContent = C.me ? `#${C.me.position + 1}` : '—';
+    }
+
+    renderActions();
+    renderMembers();
+  }
+
+  function renderActions() {
+    const box = $('ci-actions');
+    box.innerHTML = '';
+    const add = (label, cls, fn) => {
+      const b = document.createElement('button');
+      b.className = `btn ${cls}`; b.textContent = label;
+      b.addEventListener('click', () => fn(b));
+      box.appendChild(b);
+    };
+
+    if (C.finished) return;
+
+    if (!C.started) {
+      if (C.me && C.me.isOwner && C.joined >= 2) add('Start the circle', '', doStart);
+      else box.innerHTML = `<div class="empty">Waiting for everyone to join. The owner starts it when the circle is full.</div>`;
       return;
     }
 
+    if (C.me && !C.me.paidThisRound) add(`Put in GHS ${ghs(C.contributionAmount)}`, '', doPay(C.currentRound));
+    if (C.me && C.me.arrears > 1) add(`Pay a round you missed`, 'ghost', doArrears);
+    if (C.everyonePaid || Date.now() > C.roundEndsAt) add('Settle this round', 'warm', doSettle);
+    if (!box.children.length) {
+      const left = Math.max(0, Math.round((C.roundEndsAt - Date.now()) / 60000));
+      box.innerHTML = `<div class="empty"><b>You're paid up</b>Waiting for the others. This round closes in about ${left} minute${left === 1 ? '' : 's'}.</div>`;
+    }
+  }
+
+  function renderMembers() {
+    $('ci-members').innerHTML = C.members.length ? C.members.map((m) => {
+      const mine = C.me && m.address === C.me.address;
+      const cls = m.received ? 'done' : m.isNext && C.started ? 'next' : '';
+      const st = !C.started ? '' : m.received ? 'took the pot'
+        : m.paidThisRound ? '<span class="paid">paid</span>' : '<span class="owes">owes</span>';
+      return `<div class="entry ${cls}">
+        <span class="pos">${m.position + 1}</span>
+        <span class="nm2">${m.handle.split(' · ')[0]}${mine ? ' (you)' : ''}<em>${m.handle.split(' · ')[1] || ''}</em></span>
+        <span class="st">${st}</span></div>`;
+    }).join('') : `<div class="empty"><b>Nobody yet</b>Share the code above.</div>`;
+  }
+
+  // ---------- actions ----------
+  const guard = async (btn, working, fn) => {
+    btn.disabled = true;
+    say('s-circle', 'work', working);
+    try { await fn(); } catch (err) { say('s-circle', 'bad', err.message); }
+    finally { btn.disabled = false; }
+  };
+
+  const doStart = (btn) => guard(btn, 'Starting the circle and locking the order…', async () => {
+    const r = await api('startCircle', { circleId: openCircle });
+    await renderCircle(); renderBook().catch(() => {});
+    say('s-circle', 'good', `The circle is running and the order is locked. <a href="${r.explorer}" target="_blank" rel="noopener">See the receipt</a>`);
+  });
+
+  const payRound = async (round) => {
+    const { nonce } = await api('nonceFor', { address: wallet.address });
+    const signature = await wallet.signTypedData(C.domain, TYPES, {
+      circleId: C.circleId, member: wallet.address, amount: C.contributionAmount, round, nonce });
+    return api('contribute', { circleId: C.circleId, member: wallet.address,
+      amount: C.contributionAmount, round, signature });
+  };
+
+  const doPay = (round) => (btn) => guard(btn, 'Confirming — about ten seconds.', async () => {
+    const r = await payRound(round);
+    await renderCircle(); renderBook().catch(() => {});
+    say('s-circle', 'good', `GHS ${ghs(C.contributionAmount)} is in the box. <a href="${r.explorer}" target="_blank" rel="noopener">See the receipt</a>`);
+  });
+
+  const doArrears = (btn) => guard(btn, 'Finding the round you missed…', async () => {
+    let target = -1;
+    for (let r = 0; r < C.currentRound; r++) {
+      const paidThen = C.me.paidRounds > r;
+      if (!paidThen) { target = r; break; }
+    }
+    if (target < 0) target = 0;
+    const res = await payRound(target);
+    await renderCircle(); renderBook().catch(() => {});
+    say('s-circle', 'good', `Round ${target + 1} settled. <a href="${res.explorer}" target="_blank" rel="noopener">See the receipt</a>`);
+  });
+
+  const doSettle = (btn) => guard(btn, 'Working out whose turn it is…', async () => {
+    const r = await api('settleRound', { circleId: openCircle });
+    await renderCircle(); renderBook().catch(() => {});
+    if (r.stalled) say('s-circle', 'bad', 'Nobody had kept up, so the pot rolls into the next round.');
+    else say('s-circle', 'good', `${r.paidTo.split(' · ')[0]} took GHS ${ghs(r.amount)}.${r.missed.length ? ` ${r.missed.length} skipped for being behind.` : ''} <a href="${r.explorer}" target="_blank" rel="noopener">See the receipt</a>`);
+  });
+
+  // ---------- the book ----------
+  const dayName = (d, now) => {
+    const day = (x) => new Date(x.getFullYear(), x.getMonth(), x.getDate()).getTime();
+    const diff = Math.round((day(now) - day(d)) / 86400000);
+    return diff === 0 ? 'Today' : diff === 1 ? 'Yesterday'
+      : d.toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long' });
+  };
+  const clock = (d) => d.toLocaleTimeString('en-GB', { hour: 'numeric', minute: '2-digit', hour12: true }).replace(/\s/g, '');
+
+  async function renderBook() {
+    const box = $('ci-book');
+    const { rows, now } = await api('activity', { circleId: openCircle });
+    if (!rows.length) {
+      box.innerHTML = `<div class="empty"><b>Nothing written yet</b>Every payment gets its date, its time and a receipt here, and none of it can be changed afterwards.</div>`;
+      return;
+    }
     const today = new Date(now);
     let last = '';
     box.innerHTML = rows.map((r) => {
-        const d = new Date(r.at);
-        const label = dayName(d, today);
-        const head = label === last ? '' : `<div class="day">${label}</div>`;
-        last = label;
-        return `${head}<div class="act${r.kind === 'out' ? ' out' : ''}">
-          <span class="t">${clock(d)}</span>
-          <span class="d"><b>${r.who || 'a member'}</b>
-            <a href="${r.explorer}" target="_blank" rel="noopener">${r.kind === 'out' ? 'took the pot' : 'put in'} · receipt</a></span>
-          <span class="m num">${r.kind === 'out' ? '−' : '+'}GHS ${ghs(r.amount)}</span>
-        </div>`;
-      }).join('');
+      const d = new Date(r.at);
+      const label = dayName(d, today);
+      const head = label === last ? '' : `<div class="day">${label}</div>`;
+      last = label;
+      const who = (r.who || 'somebody').split(' · ')[0];
+      const what = r.kind === 'out' ? 'took the pot' : r.kind === 'missed' ? 'was skipped — behind' : 'put in';
+      const amt = r.kind === 'missed' ? 'missed turn' : `${r.kind === 'out' ? '−' : '+'}GHS ${ghs(r.amount)}`;
+      return `${head}<div class="act ${r.kind === 'out' ? 'out' : r.kind === 'missed' ? 'missed' : ''}">
+        <span class="t">${clock(d)}</span>
+        <span class="d"><b>${who}</b><a href="${r.explorer}" target="_blank" rel="noopener">${what} · receipt</a></span>
+        <span class="m num">${amt}</span></div>`;
+    }).join('');
   }
 
-  setAmount(2000);
+  // restore a session
+  const savedKey = localStorage.getItem(KEY), savedName = localStorage.getItem(NAME);
+  if (savedKey && savedName) {
+    wallet = new ethers.Wallet(savedKey);
+    handle = savedName;
+    $('me-name').textContent = handle;
+    const parts = savedName.split(' · ');
+    $('fullname').value = parts[0] || '';
+    refreshList().then(() => show('list')).catch(() => show('gate'));
+  }
 })();
 </script>
 </body>
