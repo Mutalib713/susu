@@ -159,6 +159,10 @@ h2{font-family:var(--display);font-size:21px;font-weight:600;margin-bottom:var(-
     <div id="gateStatus" class="status" role="status" aria-live="polite"></div>
 
     <form id="gateForm" novalidate>
+      <label for="fullname">Your name</label>
+      <input id="fullname" type="text" autocomplete="name" placeholder="Kwame Asante" maxlength="24" required>
+      <div style="height:var(--s4)"></div>
+
       <label for="phone">Your phone number</label>
       <input id="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="024 123 4567" required>
       <p class="hint">The same number your group already knows you by. No password, no app to install.
@@ -286,6 +290,9 @@ h2{font-family:var(--display);font-size:21px;font-weight:600;margin-bottom:var(-
   // ---------- sign in ----------
   $('gateForm').addEventListener('submit', async (e) => {
     e.preventDefault();
+    const nm = $('fullname').value.trim().replace(/\s+/g, ' ').slice(0, 24);
+    if (nm.length < 2) return say('gateStatus', 'bad', 'Your group needs a name to recognise you by.');
+
     const phone = normalisePhone($('phone').value);
     if (!phone) return say('gateStatus', 'bad', "That doesn't look like a Ghana number. Try 024 123 4567.");
 
@@ -301,7 +308,7 @@ h2{font-family:var(--display);font-size:21px;font-weight:600;margin-bottom:var(-
         localStorage.setItem(WHO, phone);
       }
       wallet = new ethers.Wallet(pk);
-      handle = maskPhone(phone);
+      handle = `${nm} · ${maskPhone(phone)}`;
 
       const r = await api('join', { address: wallet.address, handle });
       note(r.returning ? 'Signed back in' : 'Opened an account', r);
