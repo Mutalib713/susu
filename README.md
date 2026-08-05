@@ -124,22 +124,36 @@ arrears and become eligible again — one missed week is a lost turn, not an exp
 
 **How does money actually get in? Do you deposit?**
 
-Right now, no. New members are handed GHS 500 of demo money by the relayer. Nothing real moves.
+The shape is built, the provider is not. You tap **Top up**, enter an amount and your number,
+and your balance goes up with a public receipt. Money comes in the way it already does, and you
+never buy a coin — the chain holds the book, not the cash.
 
-The real version is mobile money in, mobile money out. You send to the group's number the way
-you already send MoMo to anyone, and your balance goes up. Payout comes back to your number. You
-never buy a coin. The chain holds the book and the rules, not the cash. The reason this isn't
-built is a Bank of Ghana licence or a licensed partner, which is weeks of paperwork rather than
-an afternoon of code.
+**The provider behind that button is a mock, and the app says so on the screen.** Connecting real
+MTN MoMo needs a Bank of Ghana licence or a licensed partner, which is weeks of paperwork rather
+than hours of code. Swapping it in means replacing one function and setting one secret.
 
 **How would the app know the money arrived?**
 
-The payment provider sends an automatic signed message the moment a payment lands, and the
-relayer credits the balance. That mechanism is called an *oracle*, a bridge that tells the chain
-about something that happened in the real world. The uncomfortable part: whoever tells the chain
-can lie to it. We shrank that trust rather than removing it. Nobody here holds the cash, the book
-can't be edited, every credit is public and dated, and the member keeps their own MoMo receipt to
-check against. Proper fixes are multiple independent signers, and eventually web proofs (zkTLS).
+The provider sends a signed message the moment a payment lands, and the relayer credits the
+balance onchain. **That verification is real, not simulated:**
+
+- HMAC-SHA256 over the exact raw request bytes, so a body altered after signing is refused
+- a timing-safe comparison, so a signature can't be guessed a byte at a time
+- a five-minute freshness window, so an old message can't be replayed
+- a reference checked against the chain's own `Credited` events, so the same payment can't be
+  credited twice even if the server restarts
+- failed payments, bad amounts and malformed accounts refused outright
+
+There are 18 tests on this path alone — forging a signature, tampering with a signed body,
+signing with the wrong secret, replaying a stale payload. Try it yourself: POST a payload
+claiming GHS 99,999 to `/api/momoWebhook` with a made-up signature and it returns
+`400 webhook rejected`.
+
+That arrangement is still an *oracle*, a bridge telling the chain about the real world, and the
+uncomfortable part is that whoever tells the chain can lie to it. We shrank that trust rather
+than removing it. Nobody here holds the cash, the book can't be edited, every credit is public
+and dated with its provider reference, and the member keeps their own MoMo receipt to check
+against. Proper fixes are multiple independent signers, and eventually web proofs (zkTLS).
 
 **Who pays the transaction fees?**
 

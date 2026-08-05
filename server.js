@@ -18,17 +18,21 @@ const server = http.createServer(async (req, res) => {
   if (url.pathname.startsWith('/api/')) {
     const action = url.pathname.slice(5);
     let body = {};
+    let raw = '';
     if (req.method === 'POST') {
       const chunks = [];
       for await (const c of req) chunks.push(c);
+      // Keep the exact bytes: webhook signatures are computed over the raw body, and
+      // re-serialising the parsed object would change them.
+      raw = Buffer.concat(chunks).toString();
       try {
-        body = JSON.parse(Buffer.concat(chunks).toString() || '{}');
+        body = JSON.parse(raw || '{}');
       } catch {
         return send(res, 400, { error: 'bad json' });
       }
     }
     try {
-      return send(res, 200, await handle(action, body));
+      return send(res, 200, await handle(action, body, { raw, headers: req.headers }));
     } catch (e) {
       console.error(action, '->', e.shortMessage || e.message);
       return send(res, 400, { error: e.shortMessage || e.message });

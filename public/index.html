@@ -142,6 +142,9 @@ button.card:hover{border-color:var(--accent)}
 .act.out .m{color:var(--support)}
 .act.missed .m{color:var(--accent2)}
 
+.note{background:var(--field2);border-left:4px solid var(--accent2-deep);border-radius:var(--r-sm);
+  padding:var(--s4);margin-bottom:var(--s5);font-size:14.5px;color:var(--ink2)}
+.note b{color:var(--ink)}
 .codebox{background:var(--surface);border:2px dashed var(--rule);border-radius:var(--r-md);
   padding:var(--s5);text-align:center;margin-bottom:var(--s4)}
 .codebox .c{font-family:ui-monospace,Menlo,monospace;font-size:32px;font-weight:700;letter-spacing:.18em;
@@ -202,6 +205,36 @@ button.card:hover{border-color:var(--accent)}
 
     <button class="btn" data-go="create">Start a new circle</button>
     <button class="btn ghost" data-go="join">Join with a code</button>
+    <button class="btn ghost" data-go="topup">Top up with mobile money</button>
+  </section>
+
+  <!-- ══════════ TOP UP ══════════ -->
+  <section id="v-topup" class="hidden">
+    <a class="back" data-go="list" href="#">← Your circles</a>
+    <h2>Top up</h2>
+    <p class="lede">Money comes in the way it already does — you send mobile money, and your
+      balance goes up. You never buy a coin.</p>
+
+    <div class="note">
+      <b>This one is simulated.</b> Connecting real MTN MoMo needs a Bank of Ghana licence or a
+      licensed partner, which we don't have. The signature checking behind this button is real
+      and is the same code a live provider would go through. No actual money moves.
+    </div>
+
+    <div id="s-topup" class="status" role="status" aria-live="polite"></div>
+
+    <form id="f-topup" novalidate>
+      <div class="fieldset">
+        <label for="t-amount">How much?</label>
+        <input id="t-amount" type="number" min="1" max="1000" step="1" value="100" required>
+        <p class="hint">In cedis.</p>
+      </div>
+      <div class="fieldset">
+        <label for="t-phone">Which number is paying?</label>
+        <input id="t-phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="024 123 4567" required>
+      </div>
+      <button class="btn" type="submit" id="b-topup">Send the prompt to my phone</button>
+    </form>
   </section>
 
   <!-- ══════════ CREATE ══════════ -->
@@ -363,8 +396,9 @@ button.card:hover{border-color:var(--accent)}
   };
 
   const show = (view) => {
-    ['gate', 'list', 'create', 'join', 'circle'].forEach((v) =>
+    ['gate', 'list', 'create', 'join', 'topup', 'circle'].forEach((v) =>
       $(`v-${v}`).classList.toggle('hidden', v !== view));
+    if (view === 'topup') $('t-phone').value = localStorage.getItem(WHO) || '';
     window.scrollTo(0, 0);
   };
 
@@ -480,6 +514,26 @@ button.card:hover{border-color:var(--accent)}
     } catch (err) {
       say('s-join', 'bad', err.message);
     } finally { $('b-join').disabled = false; }
+  });
+
+  // ---------- top up ----------
+  $('f-topup').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const amount = Math.round(Number($('t-amount').value) * 100);
+    const msisdn = $('t-phone').value.trim();
+    if (!(amount > 0)) return say('s-topup', 'bad', 'Enter how much you want to put in.');
+    if (!normalisePhone(msisdn)) return say('s-topup', 'bad', "That doesn't look like a Ghana number.");
+
+    $('b-topup').disabled = true;
+    say('s-topup', 'work', 'Waiting for the payment to be approved…');
+    try {
+      const r = await api('momoTopUp', { msisdn, amount, account: wallet.address });
+      say('s-topup', 'good', `GHS ${ghs(amount)} added. Reference ${r.reference}.
+        <a href="${r.explorer}" target="_blank" rel="noopener">See the receipt</a>`);
+      await refreshList();
+    } catch (err) {
+      say('s-topup', 'bad', `${err.message} — nothing was taken.`);
+    } finally { $('b-topup').disabled = false; }
   });
 
   // ---------- one circle ----------
