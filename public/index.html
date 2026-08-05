@@ -6,6 +6,11 @@
 <title>Susu — the box everybody can see into</title>
 <meta name="description" content="Group savings where the order is fixed, the book can't be edited, and nobody holds the money.">
 <meta name="robots" content="noindex">
+<meta property="og:title" content="Susu — the box everybody can see into">
+<meta property="og:description" content="Group savings where the order is fixed before anyone pays, the book can't be edited, and nobody holds the money.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="/og.png">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%231E5FA8'/><path d='M9 21c2.6 1.7 11.4 1.7 14 0M9 16c2.6 1.7 11.4 1.7 14 0M9 11c2.6 1.7 11.4 1.7 14 0' stroke='%23F4EDE1' stroke-width='2.2' fill='none' stroke-linecap='round'/></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -15,6 +20,9 @@
   --field:#F4EDE1; --field2:#E7DCC8; --surface:#FFFCF5;
   --ink:#181410; --ink2:#4E463A; --rule:#D2C4A8;
   --accent:#1E5FA8; --accent2:#D16211; --support:#1B6B4B;
+  /* accent2 is a 3.84:1 surface, fine as a rule or a bar but not under white text.
+     accent2-deep carries white at 5.13:1, so anything with a label on it uses this. */
+  --accent2-deep:#B0530E;
   --s1:4px; --s2:8px; --s3:12px; --s4:16px; --s5:24px; --s6:32px; --s7:48px; --s8:64px;
   --r-sm:6px; --r-md:10px; --r-lg:16px;
   --display:"Fraunces",Georgia,serif; --body:"Public Sans",-apple-system,Segoe UI,sans-serif;
@@ -41,8 +49,8 @@ h3{font-family:var(--display);font-size:17px;font-weight:600;margin-bottom:var(-
 .lede{color:var(--ink2);max-width:40ch;margin-bottom:var(--s6)}
 
 label{display:block;font-size:14px;font-weight:600;margin-bottom:var(--s2)}
-input,select{width:100%;font:inherit;font-size:17px;padding:14px var(--s4);background:var(--surface);
-  border:1.5px solid var(--rule);border-radius:var(--r-md);color:var(--ink)}
+input,select{width:100%;font:inherit;font-size:17px;padding:var(--s3) var(--s4);min-height:52px;
+  background:var(--surface);border:1.5px solid var(--rule);border-radius:var(--r-md);color:var(--ink)}
 input:focus,select:focus{border-color:var(--accent);outline:none;box-shadow:0 0 0 3px rgba(30,95,168,.18)}
 .hint{font-size:13.5px;color:var(--ink2);margin-top:var(--s2)}
 .fieldset{margin-bottom:var(--s5)}
@@ -57,8 +65,8 @@ button{font:inherit;cursor:pointer;border:none;background:none;color:inherit}
 .btn:disabled{background:var(--rule);color:var(--ink2);cursor:not-allowed}
 .btn.ghost{background:transparent;color:var(--accent);border:1.5px solid var(--rule);box-shadow:none}
 .btn.ghost:hover:not(:disabled){background:var(--field2);border-color:var(--accent)}
-.btn.warm{background:var(--accent2)}
-.btn.warm:hover:not(:disabled){background:#B0530E}
+.btn.warm{background:var(--accent2-deep)}
+.btn.warm:hover:not(:disabled){background:#8A3D07}
 .btn+.btn{margin-top:var(--s3)}
 .back{font-size:14.5px;color:var(--accent);font-weight:600;margin-bottom:var(--s4);display:inline-block}
 .back:hover{text-decoration:underline}
@@ -79,7 +87,7 @@ button.card:hover{border-color:var(--accent)}
 .card .row1{display:flex;align-items:baseline;justify-content:space-between;gap:var(--s3)}
 .card .nm{font-family:var(--display);font-size:19px;font-weight:600}
 .card .meta{font-size:13.5px;color:var(--ink2);margin-top:var(--s1)}
-.tag{font-size:12px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;padding:4px 10px;
+.tag{font-size:12px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;padding:var(--s1) var(--s3);
   border-radius:999px;background:var(--field2);color:var(--ink2);white-space:nowrap}
 .tag.live{background:#E6F1EB;color:var(--support)}
 .tag.wait{background:#F7E7DC;color:#8A3D07}
@@ -94,7 +102,7 @@ button.card:hover{border-color:var(--accent)}
 
 .turn{display:flex;align-items:center;gap:var(--s3);padding:var(--s4);background:var(--field2);
   border-radius:var(--r-md);margin-bottom:var(--s4)}
-.turn .crown{width:38px;height:38px;flex:none;border-radius:50%;background:var(--accent2);color:#fff;
+.turn .crown{width:38px;height:38px;flex:none;border-radius:50%;background:var(--accent2-deep);color:#fff;
   display:grid;place-items:center;font-weight:700;font-size:15px;font-family:var(--display)}
 .turn .t1{font-size:13px;color:var(--ink2)}
 .turn .t2{font-weight:600}
@@ -109,7 +117,7 @@ button.card:hover{border-color:var(--accent)}
 .pos{width:32px;height:32px;flex:none;border-radius:50%;background:var(--field2);color:var(--ink2);
   display:grid;place-items:center;font-weight:700;font-size:14px}
 .entry.done .pos{background:var(--support);color:#fff}
-.entry.next .pos{background:var(--accent2);color:#fff}
+.entry.next .pos{background:var(--accent2-deep);color:#fff}
 .entry .nm2{flex:1;min-width:0;font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .entry .nm2 em{font-style:normal;font-size:13px;color:var(--ink2);display:block;font-weight:400}
 .entry .st{font-size:13px;font-weight:600;white-space:nowrap;color:var(--ink2)}
@@ -481,7 +489,7 @@ button.card:hover{border-color:var(--accent)}
     $('ci-members').innerHTML = `<div class="empty">Loading…</div>`;
     $('ci-book').innerHTML = '';
     await renderCircle();
-    renderBook().catch(() => {});
+    renderBook();
   }
 
   async function renderCircle() {
@@ -521,8 +529,11 @@ button.card:hover{border-color:var(--accent)}
     if (next) {
       $('ci-turn-i').textContent = String(next.position + 1);
       const mine = C.me && next.address === C.me.address;
-      $('ci-turn-n').textContent = (mine ? 'You' : next.handle.split(' · ')[0])
-        + (C.nextInLine.eligible ? '' : ' — behind on payments');
+      // Owing only the current round is normal at the start of a round. Owing more than
+      // that is being behind, which is what costs you the turn.
+      const behind = C.currentRound + 1 - next.paidRounds;
+      const note = behind <= 0 ? '' : behind === 1 ? ' — not paid this round yet' : ` — ${behind} rounds behind`;
+      $('ci-turn-n').textContent = (mine ? 'You' : next.handle.split(' · ')[0]) + note;
     }
 
     // your standing
@@ -570,8 +581,11 @@ button.card:hover{border-color:var(--accent)}
     $('ci-members').innerHTML = C.members.length ? C.members.map((m) => {
       const mine = C.me && m.address === C.me.address;
       const cls = m.received ? 'done' : m.isNext && C.started ? 'next' : '';
+      const behind = C.currentRound + 1 - m.paidRounds;
       const st = !C.started ? '' : m.received ? 'took the pot'
-        : m.paidThisRound ? '<span class="paid">paid</span>' : '<span class="owes">owes</span>';
+        : m.paidThisRound ? '<span class="paid">paid</span>'
+        : behind > 1 ? `<span class="owes">${behind} behind</span>`
+        : '<span class="owes">not yet</span>';
       return `<div class="entry ${cls}">
         <span class="pos">${m.position + 1}</span>
         <span class="nm2">${m.handle.split(' · ')[0]}${mine ? ' (you)' : ''}<em>${m.handle.split(' · ')[1] || ''}</em></span>
@@ -589,7 +603,7 @@ button.card:hover{border-color:var(--accent)}
 
   const doStart = (btn) => guard(btn, 'Starting the circle and locking the order…', async () => {
     const r = await api('startCircle', { circleId: openCircle });
-    await renderCircle(); renderBook().catch(() => {});
+    await renderCircle(); renderBook();
     say('s-circle', 'good', `The circle is running and the order is locked. <a href="${r.explorer}" target="_blank" rel="noopener">See the receipt</a>`);
   });
 
@@ -603,7 +617,7 @@ button.card:hover{border-color:var(--accent)}
 
   const doPay = (round) => (btn) => guard(btn, 'Confirming — about ten seconds.', async () => {
     const r = await payRound(round);
-    await renderCircle(); renderBook().catch(() => {});
+    await renderCircle(); renderBook();
     say('s-circle', 'good', `GHS ${ghs(C.contributionAmount)} is in the box. <a href="${r.explorer}" target="_blank" rel="noopener">See the receipt</a>`);
   });
 
@@ -615,13 +629,13 @@ button.card:hover{border-color:var(--accent)}
     }
     if (target < 0) target = 0;
     const res = await payRound(target);
-    await renderCircle(); renderBook().catch(() => {});
+    await renderCircle(); renderBook();
     say('s-circle', 'good', `Round ${target + 1} settled. <a href="${res.explorer}" target="_blank" rel="noopener">See the receipt</a>`);
   });
 
   const doSettle = (btn) => guard(btn, 'Working out whose turn it is…', async () => {
     const r = await api('settleRound', { circleId: openCircle });
-    await renderCircle(); renderBook().catch(() => {});
+    await renderCircle(); renderBook();
     if (r.stalled) say('s-circle', 'bad', 'Nobody had kept up, so the pot rolls into the next round.');
     else say('s-circle', 'good', `${r.paidTo.split(' · ')[0]} took GHS ${ghs(r.amount)}.${r.missed.length ? ` ${r.missed.length} skipped for being behind.` : ''} <a href="${r.explorer}" target="_blank" rel="noopener">See the receipt</a>`);
   });
@@ -637,7 +651,18 @@ button.card:hover{border-color:var(--accent)}
 
   async function renderBook() {
     const box = $('ci-book');
-    const { rows, now } = await api('activity', { circleId: openCircle });
+    box.innerHTML = `<div class="empty">Reading the book…</div>`;
+
+    let rows, now;
+    try {
+      ({ rows, now } = await api('activity', { circleId: openCircle }));
+    } catch (err) {
+      // Never claim the book is empty when we simply could not read it.
+      box.innerHTML = `<div class="empty"><b>Couldn't read the book</b>${err.message}. The payments are
+        still onchain — <a href="${C ? C.contractUrl : '#'}" target="_blank" rel="noopener">check the contract</a>.</div>`;
+      return;
+    }
+
     if (!rows.length) {
       box.innerHTML = `<div class="empty"><b>Nothing written yet</b>Every payment gets its date, its time and a receipt here, and none of it can be changed afterwards.</div>`;
       return;

@@ -6,7 +6,8 @@ EAG Ghana Hackathon 2026 · Ghana Track · Built in one afternoon in Kumasi.
 
 **Try it: https://susu-dpbrw08ny-mutalib.vercel.app**
 
-Live contract: [`0xe66CEB8f1791ab5BAC2ce49299fD6731dfc633d9`](https://sepolia.etherscan.io/address/0xe66CEB8f1791ab5BAC2ce49299fD6731dfc633d9) on Ethereum Sepolia.
+Live contract: [`0x0401020fb602ae32F388F43B3f809AD98e08065B`](https://sepolia.etherscan.io/address/0x0401020fb602ae32F388F43B3f809AD98e08065B) on Ethereum Sepolia.
+44 tests, all passing. `npm run check`.
 
 Sign in with any name and any Ghana-format number, like `024 123 4567`. You get GHS 500 of demo
 money and you're in the group. Nothing to install.
@@ -67,12 +68,24 @@ asks for. We just refused to make the user learn either one.
 
 ## What it does today
 
-- Sign in with an email. An account opens on the public chain in about ten seconds.
-- New members get GHS 500 of demo money so anyone can try it immediately.
-- Put money into the group box. Pick 10, 20, 50, or type your own amount.
-- Watch the box fill up, and see exactly who has put in what.
-- Pay the whole pot out to whoever's turn it is this round.
-- Open the receipts drawer to see every action on the public record.
+- **Sign in with a phone number.** An account opens on the public chain in about ten seconds.
+- **Start a circle.** You set the name, the amount per round, how many people, and how long a
+  round lasts. You get a join code to share.
+- **Join with a code.** The code is stored onchain only as a hash, so nobody can read the
+  blockchain and harvest working codes.
+- **The order locks when the circle starts.** Members queue in join order. After the first cedi
+  is paid, nobody can be added, removed, or reordered — including whoever started it.
+- **Put in each round**, by signing rather than transacting. You never hold a coin or pay a fee.
+- **The contract decides who gets paid.** There is no function anywhere that lets a person choose
+  the recipient. `settleRound()` works it out from the locked order, and anyone can call it.
+- **Fall behind and you lose your turn.** You cannot take a pot unless you have paid every round
+  so far. Miss one and the contract passes over you, logs it publicly, and gives the pot to the
+  next person who kept up.
+- **Catch up whenever you like.** Pay the rounds you owe and you are eligible again. One missed
+  week does not end your membership.
+- **Deadlines keep it moving.** A round settles as soon as everyone has paid, or once the round
+  closes — so one person refusing to pay cannot freeze everybody else's money.
+- **The book** shows every payment with its date, time and a receipt link to the public record.
 
 ## Being straight about the limits
 
@@ -98,12 +111,16 @@ These came up while building it. Short answers here, full detail in
 **What if someone stops paying after they've taken the pot?**
 
 No software can force anyone to pay, and anybody who tells you a blockchain solves this is
-selling something. What changes is the consequence. Today a defaulter takes the pot, stops
-paying, and joins a different susu two streets over where nobody knows. Here the record is
-permanent and public, so it travels with them. Next contract change is eligibility by history:
-you must have contributed several rounds before you can take a pot, which is how careful groups
-already order people. **The current version does not handle this yet.** Payout is operator-
-triggered with no eligibility rules.
+selling something. Two things blunt it.
+
+First, the record is permanent and public, so it travels with them. Today a defaulter takes the
+pot, stops paying, and joins a different susu two streets over where nobody knows. That stops
+being free.
+
+Second, and this is enforced in code: **you cannot take a pot unless you have paid every round so
+far.** When a member who is behind reaches the front of the queue, the contract passes over them,
+emits a public `TurnMissed`, and hands the pot to the next person who kept up. They can pay their
+arrears and become eligible again — one missed week is a lost turn, not an expulsion.
 
 **How does money actually get in? Do you deposit?**
 
@@ -148,9 +165,16 @@ their whole life.
 
 **Is there a group, and can I see what everyone put in?**
 
-Yes. The ledger shows every member and their total, and the book shows every contribution with
-its date, time and receipt. What doesn't exist yet is *multiple* groups. Right now there is one
-box. Group creation and invites are on the roadmap.
+Yes. A circle has its own members, its own pot and its own order, and you can be in several at
+once. The order view shows each member's position, whether they have paid this round, and who has
+already taken their turn. The book shows every payment with its date, time and receipt.
+
+**Who decides the payout order, and can they cheat it?**
+
+Whoever starts the circle sets it, and members queue in join order. That is a trust point, so two
+things constrain it: the order is public and locked before anybody pays a single cedi, and the
+owner is bound by the same contribution rule as everyone else. A dishonest owner who puts
+themselves first still has to keep paying every round or the contract skips them.
 
 ## Run it yourself
 
